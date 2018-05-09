@@ -27,4 +27,12 @@ public class Utils {
 		
 		return img;
 	}
+	
+	public static String leftPad(String s, int dig, String pad) {
+		while(s.length() < dig) {
+			s = pad + s;
+		}
+		
+		return s;
+	}
 }

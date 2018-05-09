@@ -188,12 +188,12 @@ public class GraphicComponent {
 		return this.mBackgroundColor;
 	}
 	
-	public final void repaint(Graphics2D g1) {
+	public void repaint(Graphics2D g1) {
 		if(!getVisible()) return;
 		
 		Graphics2D g = (Graphics2D) g1.create();
-		g.translate(this.mPosXAbs, this.mPosYAbs);
-		//g.setClip(0, 0, this.mWidthAbs, this.mHeightAbs);
+		g.translate(this.getX(), this.getY());
+
 		this.paint(g);
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;
