@@ -12,124 +12,70 @@ import uk.ac.cam.relf2.idesign.components.StackComponent;
 import uk.ac.cam.relf2.idesign.components.TextComponent;
 import uk.ac.cam.relf2.idesign.components.Utils;
 
-public class BreakdownScreen extends GraphicComponent {
+public class BreakdownScreen extends StackComponent {
 	
 	private GraphicComponent mHomeScreen;
-	private boolean mOpen = false;
 
-	TextComponent text;
+	private DayBreakdown mTopBar;
 	
-	public BreakdownScreen(GraphicComponent homeScreen) {
+	private float mScroll = 0;
+	
+	private Input input;
+	
+	public BreakdownScreen(GraphicComponent homeScreen, Input input) {
 		this.mHomeScreen = homeScreen;
 		initialise();
+		
+		this.input = input;
 	}
 	
 	@Override
 	public void paint(Graphics2D g) {
 		super.paint(g);
 		
-		if(mOpen) setPosition(0, Math.max(0, getY()-60));
+		if(mTopBar.getOpen()) {
+			if(getHeight() > mHomeScreen.getHeight()) {
+				mScroll += input.getScroll() * 40;
+				mScroll = Math.max(mHomeScreen.getHeight()-this.getHeight(), mScroll);
+				mScroll = Math.min(0, mScroll);
+			} else {
+				mScroll = 0;
+			}
+			
+			setPosition(0, mScroll);
+		}
 		
-		Calendar cal = Calendar.getInstance();
-		String date = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.UK);
-				
-		date += " " + cal.get(Calendar.DAY_OF_MONTH);
-		cal.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.UK);
-		if(date.endsWith("1")) date+="st";
-		else if(date.endsWith("2")) date+="nd";
-		else if(date.endsWith("3")) date+="rd";
-		else date+="th";
-		
-		date += " " + cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.UK);
-		
-		date += ", " + Utils.leftPad("" + (cal.get(Calendar.AM_PM)*12 + cal.get(Calendar.HOUR)), 2, "0") + ":" + Utils.leftPad("" + cal.get(Calendar.MINUTE), 2, "0");
-		
-		text.setText(date + ", 20 *C", 25);
+		String date = Utils.getDateTimeString(0);
+		mTopBar.setText(date + ", 20 *C");
 	}
 
 	private void initialise() {
 		this.setBackgroundColor(new Color(250, 250, 250));
 		this.setSize(100, 100, false);
-
-		GraphicComponent topBar = new GraphicComponent();
-		topBar.setSize(100, 8, false);
-		topBar.setBackgroundColor(Color.white);
-		this.addComponent(topBar);
 		
-		ImageComponent shade = new ImageComponent(Utils.loadImage("/shade.png"));
-		shade.setSize(100, 10, false);
-		shade.setPosition(0, -10, false);
-		topBar.addComponent(shade);
+		mTopBar = new DayBreakdown();
+		mTopBar.setSize(100, false, 72, true);
+		addComponent(mTopBar);
 		
-		String date = getDateTimeString();
-		
-		text = new TextComponent();
-		text.setText(date + ", 20 *C", 25);
-		text.setPosition(50, 50, false);
-		text.setBackgroundColor(new Color(180, 180, 180));
-		topBar.addComponent(text);
-		
-		ImageComponent arrow = new ImageComponent(Utils.loadImage("/up_arrow.png"));
-		arrow.setSize(30, 30);
-		arrow.setPosition(90, 30, false);
-		topBar.addComponent(arrow);
-		
-		topBar.setComponentListener(new ComponentListener() {
+		mTopBar.setComponentListener(new ComponentListener() {
 			@Override
 			public void onClicked(int x, int y) {
-				mOpen = !mOpen;
+				mTopBar.setOpen(!mTopBar.getOpen());
 				
-				if(mOpen) {
-					arrow.setPosition(90, 70, false);
-					arrow.setSize(30, -30);
-					
+				if(mTopBar.getOpen()) {
 					mHomeScreen.setVisible(false);
 				} else {
 					setPosition(0, 92, false);
-					arrow.setPosition(90, 30, false);
-					arrow.setSize(30, 30);
-					
 					mHomeScreen.setVisible(true);
 				}
 			}
 		});
 		
-		StackComponent stack = new StackComponent();
-		stack.setPosition(0, 8, false);
-		stack.setSize(600, 300);
-		this.addComponent(stack);
-		
-		GraphicComponent gc1 = new GraphicComponent();
-		gc1.setSize(600, 72);
-		stack.addComponent(gc1);
-		
-		GraphicComponent gc2 = new GraphicComponent();
-		gc2.setSize(600, 72);
-		stack.addComponent(gc2);
-		
-		GraphicComponent gc3 = new GraphicComponent();
-		gc3.setSize(600, 72);
-		stack.addComponent(gc3);
-		
-		GraphicComponent gc4 = new GraphicComponent();
-		gc4.setBackgroundColor(Color.WHITE);
-		gc4.setSize(600, 72);
-		stack.addComponent(gc4);
-	}
-	
-	private String getDateTimeString() {
-		Calendar cal = Calendar.getInstance();
-		String date = cal.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.UK);
-				
-		date += " " + cal.get(Calendar.DAY_OF_MONTH);
-		cal.getDisplayName(Calendar.DAY_OF_MONTH, Calendar.LONG, Locale.UK);
-		if(date.endsWith("1")) date+="st";
-		else if(date.endsWith("2")) date+="nd";
-		else if(date.endsWith("3")) date+="rd";
-		else date+="th";
-		
-		date += " " + cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.UK);
-		
-		return date += ", " + Utils.leftPad("" + (cal.get(Calendar.AM_PM)*12 + cal.get(Calendar.HOUR)), 2, "0") + ":" + Utils.leftPad("" + cal.get(Calendar.MINUTE), 2, "0");
+		for(int i = 1; i < 7; i++) {
+			DayBreakdown d = new DayBreakdown();
+			d.setText(Utils.getDateTimeString(i));
+			d.setSize(100, false, 72, true);
+			addComponent(d);
+		}
 	}
 }

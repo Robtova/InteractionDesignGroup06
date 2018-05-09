@@ -16,10 +16,12 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 		this.setVisible(true);
 		this.setBackground(new Color(0,0,0));
 		
 		GraphicPanel panel = new GraphicPanel(this);
+		panel.setBackgroundColor(new Color(249, 249, 249));
 		panel.addToFrame(this);
 	}
 
@@ -28,7 +30,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		GraphicComponent homeScreen = initialiseHomeScreen();
 		panel.addComponent(homeScreen);
 		
-		GraphicComponent breakdownScreen = new BreakdownScreen(homeScreen);
+		GraphicComponent breakdownScreen = new BreakdownScreen(homeScreen, panel.getInput());
 		breakdownScreen.setPosition(0, 92, false);
 		panel.addComponent(breakdownScreen);
 	}

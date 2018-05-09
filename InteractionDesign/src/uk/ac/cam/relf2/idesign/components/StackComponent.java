@@ -19,11 +19,11 @@ public class StackComponent extends GraphicComponent {
 		GraphicComponent comp;
 		while(iterator.hasNext()) {
 			comp = iterator.next();
+			comp.setY(height, true);
 			comp.repaint(g);
-			g.translate(0, comp.getHeight());
 			height += comp.getHeight();
 		}
-		this.setSize(getWidth(), height);
+		this.setHeight(height, true);
 		g.dispose();
 	}
 }

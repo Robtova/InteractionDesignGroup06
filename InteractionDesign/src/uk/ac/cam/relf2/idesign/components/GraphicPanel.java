@@ -15,6 +15,8 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import uk.ac.cam.group06.idesign.Input;
+
 public class GraphicPanel extends GraphicComponent implements MouseListener, ComponentListener {
 
 	private JPanel mPanel;
@@ -26,14 +28,24 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 	
 	PanelListener mListener = null;
 	
+	private Input mInput;
+	
 	public GraphicPanel(PanelListener list) {
 		mListener = list;
+		
+		initialisePanel();
+	}
+	
+	public Input getInput() {
+		return mInput;
 	}
 	
 	public void initialisePanel() {
 		mPanel = new JPanel();
 		mPanel.addMouseListener(this);
 		mPanel.addComponentListener(this);
+		
+		this.mInput = new Input(mPanel);
 	}
 	
 	@Override
@@ -42,8 +54,6 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 	}
 	
 	public void addToFrame(JFrame frame) {
-		initialisePanel();
-		
 		Dimension d = frame.getSize();
 		
 		frame.add(mPanel, BorderLayout.CENTER);
@@ -77,7 +87,6 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 			boolean shouldRender = false;
 
 			while (lag >= FRAME_LENGTH) {
-				update();
 				lastUpdate = currentFrame;
 				ticks++;
 			    lag -= FRAME_LENGTH;
@@ -87,6 +96,7 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 			if(shouldRender) {
 				render();
 				frames++;
+				mInput.update();
 			}
 			
 			if(System.nanoTime() - lastPrint >= 1000000000) {

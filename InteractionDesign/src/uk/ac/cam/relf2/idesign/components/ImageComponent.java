@@ -20,6 +20,7 @@ public class ImageComponent extends GraphicComponent {
 	public void paint(Graphics2D g) {
 		if(mImage == null) return;
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(mImage, 0, 0, this.getWidth(), this.getHeight(), null);
+		if(getBackgroundColor() == CLEAR) g.drawImage(mImage, 0, 0, this.getWidth(), this.getHeight(), null);
+		else g.drawImage(mImage, 0, 0, this.getWidth(), this.getHeight(), getBackgroundColor(), null);
 	}
 }
