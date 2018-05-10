@@ -10,7 +10,7 @@ import uk.ac.cam.relf2.idesign.components.GraphicPanel;
 import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
-	
+	// Test
 	public ApplicationFrame(int width, int height) {
 		this.setSize(width, height);
 		
