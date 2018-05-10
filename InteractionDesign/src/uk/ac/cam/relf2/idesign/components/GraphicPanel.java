@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseEvent;
@@ -28,12 +29,21 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 	
 	private Input mInput;
 	
+	/**
+	 * The hybrid JPanel and GraphicComponent so graphics can be used with swing.
+	 * @param list
+	 */
 	public GraphicPanel(PanelListener list) {
 		mListener = list;
 		
 		initialisePanel();
 	}
 	
+	/**
+	 * Returns the mouse input of this panel.
+	 * 
+	 * @return the Input object
+	 */
 	public Input getInput() {
 		return mInput;
 	}
@@ -50,6 +60,11 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		throw new GraphicComponentException("A graphic panel cannot be added to another component.");
 	}
 	
+	/**
+	 * Add this panel to the JFrame and start rendering.
+	 * 
+	 * @param frame - the JFrame it is added to
+	 */
 	public void addToFrame(JFrame frame) {
 		Dimension d = frame.getSize();
 		
@@ -71,7 +86,6 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		long lastFrame = System.nanoTime();
 		long lastPrint = lastFrame;
 		long lag = 0;
-		long lastUpdate = lastFrame;
 		int ticks = 0;
 		int frames = 0;
 		
@@ -81,20 +95,20 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 			lastFrame = currentFrame;
 			lag += elapsed;
 			
-			boolean shouldRender = false;
+			boolean render = false;
 
 			while (lag >= FRAME_LENGTH) {
-				lastUpdate = currentFrame;
+				mInput.update();
+				initiateUpdate();
+				
 				ticks++;
 			    lag -= FRAME_LENGTH;
-			    shouldRender = true;
+			    render = true;
 			}
 			
-			if(shouldRender) {
+			if(render) {
 				render();
 				frames++;
-				mInput.update();
-				update();
 			}
 			
 			if(System.nanoTime() - lastPrint >= 1000000000) {
@@ -112,6 +126,9 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		}
 		
 		Graphics2D g = (Graphics2D) image.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		repaint(g);
 
@@ -127,8 +144,9 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
+	@Override
 	public void update() {
-		if(!mInput.getClicked()) return;
+		if(!mInput.getClicked()) return; 
 		
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;

@@ -52,6 +52,26 @@ public class GraphicComponent {
 	}
 	
 	/**
+	 * Allows the component to change states once per loop.
+	 */
+	public void update() {
+	}
+	
+	/**
+	 * Call this to update a component and its children
+	 */
+	public final void initiateUpdate() {
+		update();
+		
+		Iterator<GraphicComponent> iterator = mComponents.iterator();
+		GraphicComponent comp;
+		while(iterator.hasNext()) {
+			comp = iterator.next();
+			comp.initiateUpdate();
+		}
+	}
+	
+	/**
 	 * Set the borders the component is to be drawn against.
 	 * Use static values SCREEN_TOP, SCREEN_BOTTOM, SCREEN_LEFT, SCREEN_RIGHT.
 	 * 
@@ -399,7 +419,7 @@ public class GraphicComponent {
 	 * 
 	 * @param g1 - the graphics to be used
 	 */
-	public void repaint(Graphics2D g1) {
+	public final void repaint(Graphics2D g1) {
 		if(!isVisible()) return;
 		
 		Graphics2D g = (Graphics2D) g1.create();
@@ -463,6 +483,11 @@ public class GraphicComponent {
 	public boolean inBounds(int x, int y) {
 		x = x + (this.getWidth() / 2 * (mOrigin % 3));
 		y = y + (this.getHeight() / 2 * (mOrigin / 3));
+		
+		if(mParent != null) {
+			x -= mParent.getWidth() * this.mXBorder;
+			y -= mParent.getHeight() * this.mYBorder;
+		}
 		
 		return x >= this.mPosXAbs && x <= this.mPosXAbs+this.mWidthAbs
 				&& y >= this.mPosYAbs && y <= this.mPosYAbs+this.mHeightAbs;
