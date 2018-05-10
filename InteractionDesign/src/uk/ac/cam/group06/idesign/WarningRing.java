@@ -11,15 +11,13 @@ import uk.ac.cam.relf2.idesign.components.Utils;
 
 public class WarningRing extends ImageComponent implements ComponentListener {
 	
-	Image red_ring, yellow_ring, green_ring;
+	private static Image red_ring = Utils.loadImage("/Red warning.png"), 
+			yellow_ring = Utils.loadImage("/Yellow warning.png"), 
+			green_ring = Utils.loadImage("/Green warning.png");
 	private int mLevel = 0;
 
 	public WarningRing() {
 		super(null);
-		
-		red_ring = Utils.loadImage("/Red warning.png");
-		yellow_ring = Utils.loadImage("/Yellow warning.png");
-		green_ring = Utils.loadImage("/Green warning.png");
 
 		setImage(green_ring);
 		

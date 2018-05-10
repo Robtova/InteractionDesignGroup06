@@ -8,6 +8,7 @@ import java.util.Locale;
 import uk.ac.cam.relf2.idesign.components.ComponentListener;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.ImageComponent;
+import uk.ac.cam.relf2.idesign.components.Input;
 import uk.ac.cam.relf2.idesign.components.StackComponent;
 import uk.ac.cam.relf2.idesign.components.TextComponent;
 import uk.ac.cam.relf2.idesign.components.Utils;
@@ -35,7 +36,7 @@ public class BreakdownScreen extends StackComponent {
 		
 		if(mTopBar.getOpen()) {
 			if(getHeight() > mHomeScreen.getHeight()) {
-				mScroll += input.getScroll() * 40;
+				mScroll -= input.getScroll() * 40;
 				mScroll = Math.max(mHomeScreen.getHeight()-this.getHeight(), mScroll);
 				mScroll = Math.min(0, mScroll);
 			} else {
@@ -45,8 +46,8 @@ public class BreakdownScreen extends StackComponent {
 			setPosition(0, mScroll);
 		}
 		
-		String date = Utils.getDateTimeString(0);
-		mTopBar.setText(date + ", 20 *C");
+		mTopBar.setDate(Utils.getDateTimeString(0));
+		mTopBar.setTemperature(18);
 	}
 
 	private void initialise() {
@@ -73,7 +74,9 @@ public class BreakdownScreen extends StackComponent {
 		
 		for(int i = 1; i < 7; i++) {
 			DayBreakdown d = new DayBreakdown();
-			d.setText(Utils.getDateTimeString(i));
+			d.setDate(Utils.getDateTimeString(i));
+			d.setTemperature(20);
+			d.setIcon("02d");
 			d.setSize(100, false, 72, true);
 			addComponent(d);
 		}

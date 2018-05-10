@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
 import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.ImageComponent;
 
-public class WeatherIcon extends CircleComponent {
+public class WeatherIconSmall extends CircleComponent {
 	
 	private static Map<String, Image> mIcons = new HashMap<String, Image>();
 
 	private ImageComponent mCurrentIcon;
 	
-	public WeatherIcon() {
+	public WeatherIconSmall() {
 		super();
 		
 		mCurrentIcon = new ImageComponent(null);
@@ -31,7 +31,7 @@ public class WeatherIcon extends CircleComponent {
 
 	public void setIcon(String ico) {
 		if(!mIcons.containsKey(ico)) {
-			URL addr = WeatherIcon.class.getResource("/weather_icons_coded/"+ico+".png");
+			URL addr = WeatherIconSmall.class.getResource("/weather_icons_small/"+ico+".png");
 			if(addr == null) {
 				mCurrentIcon.setImage(mIcons.get("error"));
 				return;

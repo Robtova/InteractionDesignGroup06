@@ -16,30 +16,50 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	private ImageComponent mArrow;
 	private StackComponent mStack;
 	
-	private Image background = Utils.loadImage("/InfoItem.png");
+	private static Image BACKGROUND = Utils.loadImage("/InfoItem.png");
+	private static Image UP_ARROW_IMAGE = Utils.loadImage("/up_arrow.png");
 	
-	TextComponent mTopBarText;
-	ImageComponent mTopBar;
+	private static Image SMALL_RED_ICON = Utils.loadImageSection("/small_warnings.png", 0, 0, 64, 64),
+			SMALL_YELLOW_ICON = Utils.loadImageSection("/small_warnings.png", 64, 0, 64, 64),
+			SMALL_GREEN_ICON = Utils.loadImageSection("/small_warnings.png", 128, 0, 64, 64);
+
 	
+	private TextComponent mDateText;
+	private TextComponent mTempText;
+	private ImageComponent mTopBar;
+	private WeatherIconSmall mSmallIcon;
+	
+	private String mDate = "";
 	private float mTemperature = 15;
-	private float mHumidity = 15;
+	private String mIcon = null;
 	
 	public DayBreakdown() {
 		initialise();
 	}
 	
 	private void initialise() {
-		mTopBar = new ImageComponent(background);
+		mTopBar = new ImageComponent(BACKGROUND);
 		mTopBar.setSize(100, false, 72, true);
 		mTopBar.setBackgroundColor(Color.white);
 		this.addComponent(mTopBar);
 
-		mTopBarText = new TextComponent();
-		mTopBarText.setPosition(50, 50, false);
-		mTopBarText.setBackgroundColor(new Color(180, 180, 180));
-		mTopBar.addComponent(mTopBarText);
+		mDateText = new TextComponent();
+		mDateText.setPosition(25, true, 50, false);
+		mDateText.setBackgroundColor(new Color(180, 180, 180));
+		mDateText.setAlign(TextComponent.RIGHT);
+		mTopBar.addComponent(mDateText);
 		
-		mArrow = new ImageComponent(Utils.loadImage("/up_arrow.png"));
+		mTempText = new TextComponent();
+		mTempText.setPosition(85, 50, false);
+		mTempText.setBackgroundColor(new Color(180, 180, 180));
+		mTempText.setAlign(TextComponent.LEFT);
+		mTopBar.addComponent(mTempText);
+		
+		mSmallIcon = new WeatherIconSmall();
+		mSmallIcon.setSize(64, 64);
+		mSmallIcon.setPosition(4, 4);
+		
+		mArrow = new ImageComponent(UP_ARROW_IMAGE);
 		mArrow.setSize(30, 30);
 		mArrow.setPosition(90, 30, false);
 		mTopBar.addComponent(mArrow);
@@ -49,13 +69,32 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		intialiseInfoStack();
 	}
 	
+	public void setTemperature(float temp) {
+		mTemperature = temp;
+		mTempText.setText(mTemperature + "*C", 25);
+	}
+	
 	@Override
 	public void setComponentListener(ComponentListener comp) {
 		mTopBar.setComponentListener(comp);
 	}
 	
-	public void setText(String t) {
-		mTopBarText.setText(t, 25);
+	public void setIcon(String ico) {
+		mIcon = ico;
+		if(mIcon == null) {
+			mSmallIcon.setIcon("error");
+			mTopBar.removeComponent(mSmallIcon);
+			mDateText.setX(25, true);
+		} else {
+			mSmallIcon.setIcon(mIcon);
+			mTopBar.addComponent(mSmallIcon);
+			mDateText.setX(64+4+8, true);
+		}
+	}
+
+	public void setDate(String date) {
+		mDate = date;
+		mDateText.setText(mDate, 25);
 	}
 	
 	Color mStandardBackground = new Color(249, 249, 249);
@@ -65,29 +104,52 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		mStack.setY(72, true);
 		mStack.setSize(100, false, 72, true);
 		
-		ImageComponent bar1 = new ImageComponent(background);
-		bar1.setSize(100, false, 72, true);
-		bar1.setBackgroundColor(mStandardBackground);
-		mStack.addComponent(bar1);
+		addTimeEntry("00:00", "01n", 15, 0.9f, "fgggg");
+		addTimeEntry("03:00", "02n", 15, 0.9f, "fgggg");
+		addTimeEntry("06:00", "03d", 15, 0.9f, "fgggg");
+		addTimeEntry("09:00", "04d", 15, 0.9f, "fgggg");
+		addTimeEntry("12:00", "09d", 15, 0.9f, "fgggg");
+		addTimeEntry("15:00", "10d", 15, 0.9f, "fgggg");
+		addTimeEntry("18:00", "11d", 15, 0.9f, "fgggg");
+		addTimeEntry("21:00", "13n", 15, 0.9f, "fgggg");
+	}
+	
+	public void addTimeEntry(String time, String icon, float temperature, float pollution, String humidity) {
+		ImageComponent bar = new ImageComponent(BACKGROUND);
+		bar.setSize(100, false, 72, true);
+		bar.setBackgroundColor(mStandardBackground);
+		mStack.addComponent(bar);
 
-		TextComponent text1 = new TextComponent();
-		text1.setText("Temperature: " + mTemperature + "*C", 25);
-		text1.setPosition(25, true, 50, false);
-		text1.setAlign(TextComponent.RIGHT);
-		text1.setBackgroundColor(new Color(180, 180, 180));
-		bar1.addComponent(text1);
+		TextComponent text = new TextComponent();
+		text.setText(time + "   --   " + temperature + "*C", 25);
+		text.setPosition(25, true, 50, false);
+		text.setAlign(TextComponent.RIGHT);
+		text.setBackgroundColor(new Color(180, 180, 180));
+		bar.addComponent(text);
 		
-		ImageComponent bar2 = new ImageComponent(background);
-		bar2.setSize(100, false, 72, true);
-		bar2.setBackgroundColor(mStandardBackground);
-		mStack.addComponent(bar2);
-
+		Image img = SMALL_RED_ICON;
+		if(pollution <= 0.667) img = SMALL_YELLOW_ICON;
+		if(pollution <= 0.33) img = SMALL_GREEN_ICON;
+		
+		ImageComponent warning = new ImageComponent(img);
+		warning.setSize(40, 40);
+		warning.setPosition(89, false, 16, true);
+		bar.addComponent(warning);
+		
 		TextComponent text2 = new TextComponent();
-		text2.setText("Humidity: " + mHumidity + "%", 25);
-		text2.setPosition(25, true, 50, false);
-		text2.setAlign(TextComponent.RIGHT);
+		text2.setText(humidity, 25);
+		text2.setPosition(85, 50, false);
+		text2.setAlign(TextComponent.LEFT);
 		text2.setBackgroundColor(new Color(180, 180, 180));
-		bar2.addComponent(text2);
+		bar.addComponent(text2);
+		
+		if(icon != null) {
+			WeatherIconSmall iconImg = new WeatherIconSmall();
+			iconImg.setSize(64, 64);
+			iconImg.setPosition(240, 4);
+			iconImg.setIcon(icon);
+			bar.addComponent(iconImg);
+		}
 	}
 	
 	public void setOpen(boolean open) {

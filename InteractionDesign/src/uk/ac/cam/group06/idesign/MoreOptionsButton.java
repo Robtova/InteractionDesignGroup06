@@ -16,18 +16,17 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 	private boolean mOpen = false;
 	private float mExtension = 0;
 	
-	private Image mSettings, mSearch;
+	private static Image SETTINGS = Utils.loadImage("/settings_button.png"), 
+			SEARCH = Utils.loadImage("/search_button.png"),
+			TRIPLE_DOTS = Utils.loadImage("/triple_dot.png");
 	
 	public MoreOptionsButton() {
-		mDots = new ImageComponent(Utils.loadImage("/triple_dot.png"));
+		mDots = new ImageComponent(TRIPLE_DOTS);
 		mDots.setSize(100, 100, false);
 		this.addComponent(mDots);
 		
 		this.setBackgroundColor(new Color(230, 230, 230));
 		this.setComponentListener(this);
-		
-		mSettings = Utils.loadImage("/settings_button.png");
-		mSearch = Utils.loadImage("/search_button.png");
 	}
 	
 	@Override
@@ -47,8 +46,8 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		g.fillOval(-ext, (getHeight() - height) / 2, height, height);
 		
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(mSettings, -ext, (getHeight() - height) / 2, height, height, null);
-		if(ext >= height) g.drawImage(mSearch, -ext + height, (getHeight() - height) / 2, height, height, null);
+		g.drawImage(SEARCH, -ext, (getHeight() - height) / 2, height, height, null);
+		if(ext >= height) g.drawImage(SETTINGS, -ext + height, (getHeight() - height) / 2, height, height, null);
 	}
 	
 	@Override

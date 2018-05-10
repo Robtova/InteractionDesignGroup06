@@ -1,6 +1,8 @@
 package uk.ac.cam.relf2.idesign.components;
 
+import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Calendar;
@@ -28,6 +30,26 @@ public class Utils {
 		} 
 		
 		return img;
+	}
+	
+	public static Image loadImageSection(String name, int x, int y, int w, int h) {
+		URL url = Utils.class.getResource(name);
+		
+		Image img = null;
+		try {
+			img = ImageIO.read(url);
+		} catch (IOException | IllegalArgumentException e) {
+			img = ERROR;
+		} 
+		
+		BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.getGraphics();
+		
+		g.drawImage(img, 0, 0, w, h, x, y, x+w, y+h, null);
+		
+		g.dispose();
+		
+		return bi;
 	}
 	
 	public static String leftPad(String s, int dig, String pad) {

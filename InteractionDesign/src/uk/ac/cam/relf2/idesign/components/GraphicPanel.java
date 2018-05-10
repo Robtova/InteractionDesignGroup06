@@ -15,9 +15,7 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import uk.ac.cam.group06.idesign.Input;
-
-public class GraphicPanel extends GraphicComponent implements MouseListener, ComponentListener {
+public class GraphicPanel extends GraphicComponent implements ComponentListener {
 
 	private JPanel mPanel;
 	
@@ -42,7 +40,6 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 	
 	public void initialisePanel() {
 		mPanel = new JPanel();
-		mPanel.addMouseListener(this);
 		mPanel.addComponentListener(this);
 		
 		this.mInput = new Input(mPanel);
@@ -97,6 +94,7 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 				render();
 				frames++;
 				mInput.update();
+				update();
 			}
 			
 			if(System.nanoTime() - lastPrint >= 1000000000) {
@@ -129,14 +127,15 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 	}
 	
-	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void update() {
+		if(!mInput.getClicked()) return;
+		
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;
 
 		while(iterator.hasNext()) {
 			comp = iterator.next();
-			comp.checkMouse(e.getX(), e.getY(), true);
+			comp.checkMouse(mInput.getMouseX(), mInput.getMouseY(), true);
 		}
 	}
 
@@ -146,22 +145,6 @@ public class GraphicPanel extends GraphicComponent implements MouseListener, Com
 		this.setSize(e.getComponent().getWidth(), e.getComponent().getHeight(), true);
 		
 		resized = true;
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
 	}
 
 	@Override

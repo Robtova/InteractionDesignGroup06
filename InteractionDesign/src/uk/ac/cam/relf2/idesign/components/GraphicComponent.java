@@ -53,6 +53,7 @@ public class GraphicComponent {
 	
 	public void addComponent(GraphicComponent child) {
 		if(child == this) throw new GraphicComponentException("A component cannot be a child of itself.");
+		if(mComponents.contains(child)) return;
 		child.addedToComponent(this);
 		this.mComponents.add(child);
 	}
