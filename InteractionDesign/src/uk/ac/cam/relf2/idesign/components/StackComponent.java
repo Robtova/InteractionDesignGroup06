@@ -5,25 +5,23 @@ import java.util.Iterator;
 
 public class StackComponent extends GraphicComponent {
 	
+	/**
+	 * Automatically sets positions of children so that they stack on top of each other. Each child should have the default border and origin.
+	 */
+	public StackComponent() {
+	}
+	
 	@Override
-	public void repaint(Graphics2D g1) {
-		if(!getVisible()) return;
-		
-		Graphics2D g = (Graphics2D) g1.create();
-		g.translate(this.getX(), this.getY());
-		
+	public void paint(Graphics2D g) {
 		int height = 0;
-
-		this.paint(g);
+		
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;
 		while(iterator.hasNext()) {
 			comp = iterator.next();
 			comp.setY(height, true);
-			comp.repaint(g);
 			height += comp.getHeight();
 		}
 		this.setHeight(height, true);
-		g.dispose();
 	}
 }
