@@ -16,33 +16,61 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 	
 	private boolean mClicked, mClickedShow;
 	
+	/**
+	 * Monitors the mouse inputs of a JPanel.
+	 * 
+	 * @param panel - the JPanel to monitor
+	 */
 	public Input(JPanel panel) {
 		panel.addMouseListener(this);
 		panel.addMouseMotionListener(this);
 		panel.addMouseWheelListener(this);
 	}
 	
+	/**
+	 * Returns whether the JPanel has been clicked.
+	 * @return true if the JPanel has been clicked
+	 */
 	public boolean getClicked() {
 		return mClickedShow;
 	}
 	
+	/**
+	 * The x coordinate of the mouse cursor.
+	 * 
+	 * @return x coordinate of mouse
+	 */
 	public int getMouseX() {
 		return mMouseX;
 	}
 	
+	/**
+	 * The y coordinate of the mouse cursor.
+	 * 
+	 * @return y coordinate of mouse
+	 */
 	public int getMouseY() {
 		return mMouseY;
 	}
 	
+	/**
+	 * Returns whether the mouse has been pressed down.
+	 * 
+	 * @return true if the mouse is pressed down
+	 */
 	public boolean getMousePressed() {
-		return mPressed;
+		return mPressedShow;
 	}
 	
+	/**
+	 * Returns the number of clicks the mouse wheel has been scrolled.
+	 * @return
+	 */
 	public int getScroll() {
 		return mScrollShow;
 	}
 	
-	public void update() {
+	protected void update() {
 		mScrollShow = mScroll;
 		mScroll = 0;
 		

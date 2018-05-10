@@ -18,6 +18,12 @@ public class Utils {
 		ERROR = loadImage("/weather_icons_coded/error.png");
 	}
 	
+	/**
+	 * Load an image from a specific path.
+	 * 
+	 * @param name - path name
+	 * @return an Image object of the texture
+	 */
 	public static Image loadImage(String name) {
 		URL url = Utils.class.getResource(name);
 		
@@ -32,6 +38,16 @@ public class Utils {
 		return img;
 	}
 	
+	/**
+	 * Loads a section of an image from a specific path.
+	 * 
+	 * @param name - path name
+	 * @param x - the source x coordinate
+	 * @param y - the source y coordinate
+	 * @param w - the desired width
+	 * @param h - the desired height
+	 * @return an Image object of the desired section of the texture
+	 */
 	public static Image loadImageSection(String name, int x, int y, int w, int h) {
 		URL url = Utils.class.getResource(name);
 		
@@ -52,8 +68,16 @@ public class Utils {
 		return bi;
 	}
 	
-	public static String leftPad(String s, int dig, String pad) {
-		while(s.length() < dig) {
+	/**
+	 * Left pads a string with another string up to a certain length.
+	 * 
+	 * @param s - the string to pad
+	 * @param len - desired length
+	 * @param pad - the string used to pad
+	 * @return the padded string
+	 */
+	public static String leftPad(String s, int len, String pad) {
+		while(s.length() < len) {
 			s = pad + s;
 		}
 		
@@ -61,8 +85,9 @@ public class Utils {
 	}
 	
 	/**
+	 * Returns a string of the date and time.
 	 * 
-	 * @param addD - if 0, the the date used is todays, 1 tomorrows and so on.
+	 * @param addD - if 0, the the date used is todays, 1 tomorrows and so on. If > 0 then no time is shown.
 	 * @return A string of the date, and time.
 	 */
 	public static String getDateTimeString(int addD) {
