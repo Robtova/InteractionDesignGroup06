@@ -31,9 +31,7 @@ public class BreakdownScreen extends StackComponent {
 	}
 	
 	@Override
-	public void paint(Graphics2D g) {
-		super.paint(g);
-		
+	public void update() {
 		if(mTopBar.getOpen()) {
 			if(getHeight() > mHomeScreen.getHeight()) {
 				mScroll -= input.getScroll() * 40;
@@ -43,7 +41,8 @@ public class BreakdownScreen extends StackComponent {
 				mScroll = 0;
 			}
 			
-			setPosition(0, mScroll);
+			setPosition(0, (float) Math.max(mScroll, getY() - 40));
+			if(this.getY() <= 30) mHomeScreen.setVisible(false);
 		}
 		
 		mTopBar.setDate(Utils.getDateTimeString(0));
@@ -64,10 +63,11 @@ public class BreakdownScreen extends StackComponent {
 				mTopBar.setOpen(!mTopBar.getOpen());
 				
 				if(mTopBar.getOpen()) {
-					mHomeScreen.setVisible(false);
+					mHomeScreen.setClickable(false);
 				} else {
 					setPosition(0, 92, false);
 					mHomeScreen.setVisible(true);
+					mHomeScreen.setClickable(true);
 				}
 			}
 		});

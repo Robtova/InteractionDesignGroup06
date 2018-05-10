@@ -1,5 +1,6 @@
 package uk.ac.cam.group06.idesign;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.io.IOException;
 import java.net.URL;
@@ -28,7 +29,14 @@ public class WeatherIcon extends CircleComponent {
 		
 		setIcon("error");
 	}
+	
+	private static final Color mDay = new Color(0xD3FFFD),
+					mNight = new Color(0x002D5B);
 
+	/**
+	 * Sets the weather icon to be drawn.
+	 * @param ico - the code of the weather icon
+	 */
 	public void setIcon(String ico) {
 		if(!mIcons.containsKey(ico)) {
 			URL addr = WeatherIcon.class.getResource("/weather_icons_coded/"+ico+".png");
@@ -44,6 +52,10 @@ public class WeatherIcon extends CircleComponent {
 			}
 			mIcons.put(ico, im);
 		}
+		if(ico.endsWith("d")) setBackgroundColor(mDay);
+		else if(ico.endsWith("n")) setBackgroundColor(mNight);
+		else setBackgroundColor(CLEAR);
+		
 		mCurrentIcon.setImage(mIcons.get(ico));
 	}
 }

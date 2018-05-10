@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
+import uk.ac.cam.relf2.idesign.components.ImageComponent;
 import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
@@ -16,7 +17,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
+		this.setResizable(true);
 		this.setVisible(true);
 		this.setBackground(new Color(0,0,0));
 		
@@ -41,19 +42,20 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		screen.setSize(100, 100, false);
 		
 		WarningRing ring = new WarningRing();
-		ring.setSize(450, 450);
-		ring.setPosition(75, 175);
+		ring.setSize(60, 60, false);
+		ring.setPosition(50, 50, false);
 		screen.addComponent(ring);
+		ring.keepAspect(true);
+		ring.setOrigin(ImageComponent.MIDDLE_CENTRE);
 		
 		WeatherIcon icon = new WeatherIcon();
 		icon.setSize(55, 55, false);
 		icon.setPosition(22.5f, 22.5f, false);
-		icon.setBackgroundColor(new Color(0xD3FFFD));
-		//icon.setBackgroundColor(new Color(0x002D5B));
 		ring.addComponent(icon);
 
 		MoreOptionsButton dots = new MoreOptionsButton();
-		dots.setPosition(460, 20);
+		dots.setBorder(GraphicComponent.SCREEN_RIGHT, GraphicComponent.SCREEN_TOP);
+		dots.setPosition(-120, 20);
 		dots.setSize(100, 100);
 		screen.addComponent(dots);
 		
