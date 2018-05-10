@@ -19,6 +19,7 @@ public class GraphicComponent {
 	private boolean mXPixels = true, mYPixels = true;
 	private float mPosX = 0, mPosY = 0;
 	private int mPosXAbs = 0, mPosYAbs = 0;
+	private double mRotation = 0;
 	
 	private GraphicComponent mParent = null;
 	
@@ -200,6 +201,22 @@ public class GraphicComponent {
 	
 	/**
 	 * 
+	 * @param nRot - set the rotation to this value (in Radians)
+	 */
+	public void setRotation(double nRot) {
+		mRotation = nRot;
+	}
+	
+	/**
+	 * 
+	 * @return the rotation of this graphic.
+	 */
+	public double getRotation() {
+		return mRotation;
+	}
+	
+	/**
+	 * 
 	 * @return the width of the component in pixels.
 	 */
 	public int getWidth() {
@@ -243,7 +260,8 @@ public class GraphicComponent {
 		
 		Graphics2D g = (Graphics2D) g1.create();
 		g.translate(this.getX(), this.getY());
-
+		g.rotate(mRotation, this.getWidth()/2, this.getHeight()/2);
+		
 		this.paint(g);
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;

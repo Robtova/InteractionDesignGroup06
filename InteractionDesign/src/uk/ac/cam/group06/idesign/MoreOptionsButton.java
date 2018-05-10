@@ -33,11 +33,13 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 	public void paint(Graphics2D g) {
 		if(!mOpen) {
 			mExtension = 0;
+			mDots.setRotation(0);
 			return;
 		}
 		
 		int height = (int) (getHeight() * (106d/128d));
 		mExtension = Math.min(mExtension + 40, height * 2);
+		mDots.setRotation(mExtension*Math.PI/(height * 4));
 		int ext = (int) mExtension;
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
