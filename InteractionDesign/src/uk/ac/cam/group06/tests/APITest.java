@@ -9,54 +9,44 @@ import org.junit.Before;
 import org.junit.Test;
 
 import uk.ac.cam.group06.api.API;
+import uk.ac.cam.group06.api.HourlyLocationInformation;
 
 
 public class APITest {
 
 	@Before
-	public void setup(){
-		try {
-			API.updateLongitudeAndLatitude("cambridge", "uk");
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void setup() throws MalformedURLException{
+		API.updateLongitudeAndLatitude("cambridge", "uk");
 	}
 	
 	@Test
-	public void coordinates() {
+	public void coordinates_forCambridge() {
 		Assert.assertEquals(API.getLongitude(), 0.12, 0.001D);
 	}
 	
 	@Test
-	public void getForecast() {
-		try {
-			API.getFiveDayForecast("cambridge", "uk");
-			Assert.assertEquals(false, API.getFiveDayForecast("cambridge", "uk").getForecast().isEmpty());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void getFiveDayForecast_forCambridge_shouldBeNonEmpty() throws MalformedURLException {
+		API.getFiveDayForecast("cambridge", "uk");
+		Assert.assertEquals(false, API.getFiveDayForecast("cambridge", "uk").getForecast().isEmpty());
 	}
 	
 	@Test
-	public void getPollution(){
-		try {
-			Assert.assertNotEquals(null, API.getCurrentInformation("cambridge", "uk").getNitrogenDioxide());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void getNitrogenDioxide_forCambridge() throws MalformedURLException{
+		Assert.assertNotEquals(Double.NaN, API.getCurrentInformation("cambridge", "uk").getCarbonMonoxide());
 	}
 	
 	@Test
-	public void checkLocationObject() {
-		try {
-			Assert.assertNotEquals(null, API.getCurrentInformation("cambridge", "uk").getCityName());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public void checkHourlyData_forCambridge() throws MalformedURLException {
+		HourlyLocationInformation hli = API.getFiveDayForecast("cambridge", "uk");
+
+		Assert.assertEquals(false, hli.getForecast().isEmpty());
+	}
+	
+	@Test
+	public void checkLocationObject() throws MalformedURLException {
+		System.out.println(API.getCurrentInformation("cambridge", "uk").getCityName());
+		
+		Assert.assertNotEquals(null, API.getCurrentInformation("cambridge", "uk").getCityName());
 	}
 
 }

@@ -117,8 +117,8 @@ public class API {
 				hd.setIcon(wObj.getString("icon"));
 				
 				JsonObject windData = jObj.getJsonObject("wind");
-				hd.setWindSpeed(String.valueOf(windData.getInt("speed")));
-				hd.setWindDirection(String.valueOf(windData.getInt("deg")));
+				hd.setWindSpeed(String.valueOf(windData.getJsonNumber("speed").intValue()));
+				hd.setWindDirection(String.valueOf(windData.getJsonNumber("deg").intValue()));
 				
 				hli.addData(hd);
 			});
