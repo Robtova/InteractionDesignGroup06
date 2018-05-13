@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import uk.ac.cam.group06.api.API;
 import uk.ac.cam.group06.api.HourlyLocationInformation;
+import uk.ac.cam.group06.api.LocationInformation;
 
 
 public class APITest {
@@ -28,6 +29,12 @@ public class APITest {
 	public void getFiveDayForecast_forCambridge_shouldBeNonEmpty() throws MalformedURLException {
 		API.getFiveDayForecast("cambridge", "uk");
 		Assert.assertEquals(false, API.getFiveDayForecast("cambridge", "uk").getForecast().isEmpty());
+	}
+	
+	@Test
+	public void getCloudiness_forCambridge_notNull() throws MalformedURLException {
+		LocationInformation li = API.getCurrentInformation("cambridge", "uk");
+		Assert.assertNotEquals(null, li.getCloudCover());
 	}
 	
 	@Test

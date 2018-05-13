@@ -68,8 +68,11 @@ public class API {
 			location.setHumidity(String.valueOf(mainData.getInt("humidity")));
 			
 			JsonObject windData = obj.getJsonObject("wind");
-			location.setWindSpeed(String.valueOf(windData.getInt("speed")));
-			location.setWindDirection(String.valueOf(windData.getInt("deg")));
+			location.setWindSpeed(String.valueOf(windData.getJsonNumber("speed").intValue()));
+			location.setWindDirection(String.valueOf(windData.getJsonNumber("deg").intValue()));
+			
+			JsonObject cloudData = obj.getJsonObject("clouds");
+			location.setCloudCover(String.valueOf(cloudData.getJsonNumber("all").intValue()));
 		} catch (IOException e) {
 			System.out.println("Input stream failed");
 			e.printStackTrace();
@@ -197,5 +200,15 @@ public class API {
 			e.printStackTrace();
 		}
 		return locInfo;
+	}
+	
+	public static void main(String[] args) {
+		try {
+			System.out.println(API.getFiveDayForecast("cambridge", "uk").getForecast().get(0).getHumidity());
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

@@ -12,6 +12,7 @@ public class LocationInformation {
 	private String humidity;
 	private String windSpeed;
 	private String windDirection;
+	private String cloudCover;
 	
 	//Pollution Variables
 	private double nitrogenDioxide;
@@ -93,6 +94,14 @@ public class LocationInformation {
 
 	public void setWindDirection(String windDirection) {
 		this.windDirection = windDirection;
+	}
+	
+	public String getCloudCover() {
+		return cloudCover;
+	}
+	
+	public void setCloudCover(String cloudCover) {
+		this.cloudCover = cloudCover;
 	}
 
 	public double getNitrogenDioxide() {
