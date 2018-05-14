@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/../out/test/InteractionDesign"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="javax.json-api-1.0.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/InteractionDesign/javax.json-api-1.0.jar!/"/>
+	</lib>
+	<lib name="junit-4.11.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/InteractionDesign/junit-4.11.jar!/"/>
+	</lib>
+</component>

@@ -5,14 +5,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 
-import uk.ac.cam.relf2.idesign.components.ComponentListener;
-import uk.ac.cam.relf2.idesign.components.GraphicComponent;
-import uk.ac.cam.relf2.idesign.components.ImageComponent;
-import uk.ac.cam.relf2.idesign.components.Utils;
+import uk.ac.cam.relf2.idesign.components.*;
 
 public class MoreOptionsButton extends GraphicComponent implements ComponentListener {
 	
-	private ImageComponent mDots;
+	private ImageComponent mDots, mSettingsButton;
 	private boolean mOpen = false;
 	private float mExtension = 0;
 	
@@ -24,6 +21,16 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		mDots = new ImageComponent(TRIPLE_DOTS);
 		mDots.setSize(100, 100, false);
 		this.addComponent(mDots);
+
+		mSettingsButton = new ImageComponent(SETTINGS);
+		mSettingsButton.setSize(80, 80, false);
+        mSettingsButton.setComponentListener(new ComponentListener() {
+            @Override
+            public void onClicked(int x, int y) {
+                SettingsScreen.singleton.setVisible(!SettingsScreen.singleton.isVisible());
+            }
+        });
+		this.addComponent(mSettingsButton);
 		
 		this.setBackgroundColor(new Color(230, 230, 230));
 		this.setComponentListener(this);
@@ -34,6 +41,7 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		if(!mOpen) {
 			mExtension = 0;
 			mDots.setRotation(0);
+            mSettingsButton.setVisible(false);
 			return;
 		}
 		
@@ -46,12 +54,13 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		g.setColor(this.getBackgroundColor());
 		g.fillRect(-(int) (mExtension - getWidth() * 0.5), (getHeight() - height) / 2, ext, height);
 		g.fillOval(-ext, (getHeight() - height) / 2, height, height);
-		
+
+        mSettingsButton.setPosition(-ext + height, (getHeight() - height) / 2);
 		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g.drawImage(SEARCH, -ext, (getHeight() - height) / 2, height, height, null);
-		if(ext >= height) g.drawImage(SETTINGS, -ext + height, (getHeight() - height) / 2, height, height, null);
+		if(ext >= height) mSettingsButton.setVisible(true);
 	}
-	
+
 	@Override
 	public void onClicked(int x, int y) {
 		mOpen = !mOpen;

@@ -4,14 +4,13 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import uk.ac.cam.relf2.idesign.components.CircleComponent;
+import uk.ac.cam.relf2.idesign.components.Input;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
 import uk.ac.cam.relf2.idesign.components.ImageComponent;
 import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
-	
 	public ApplicationFrame(int width, int height) {
 		this.setSize(width, height);
 		
@@ -26,17 +25,26 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		panel.addToFrame(this);
 	}
 
+	public static GraphicComponent homeScreen;
+    public static Input globalInput;
 	@Override
 	public void initialise(GraphicPanel panel) {
-		GraphicComponent homeScreen = initialiseHomeScreen();
+        globalInput = panel.getInput();
+        SettingsScreen settingsScreen = new SettingsScreen();
+
+		homeScreen = initialiseHomeScreen(panel);
 		panel.addComponent(homeScreen);
-		
-		GraphicComponent breakdownScreen = new BreakdownScreen(homeScreen, panel.getInput());
+
+		GraphicComponent breakdownScreen = new BreakdownScreen();
 		breakdownScreen.setPosition(0, 92, false);
 		panel.addComponent(breakdownScreen);
+
+
+        settingsScreen.setPosition(0, 72, false);
+        panel.addComponent(settingsScreen);
 	}
 	
-	private GraphicComponent initialiseHomeScreen() {
+	private GraphicComponent initialiseHomeScreen(GraphicPanel panel) {
 		GraphicComponent screen = new GraphicComponent();
 		screen.setBackgroundColor(new Color(250, 250, 250));
 		screen.setSize(100, 100, false);

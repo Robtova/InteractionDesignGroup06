@@ -22,12 +22,12 @@ public class BreakdownScreen extends StackComponent {
 	private float mScroll = 0;
 	
 	private Input input;
-	
-	public BreakdownScreen(GraphicComponent homeScreen, Input input) {
-		this.mHomeScreen = homeScreen;
+
+	public BreakdownScreen() {
+		this.mHomeScreen = ApplicationFrame.homeScreen;
 		initialise();
 		
-		this.input = input;
+		this.input = ApplicationFrame.globalInput;
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class BreakdownScreen extends StackComponent {
 				}
 			}
 		});
-		
+
 		for(int i = 1; i < 7; i++) {
 			DayBreakdown d = new DayBreakdown();
 			d.setDate(Utils.getDateTimeString(i));
