@@ -16,14 +16,14 @@ public class PollutionLevel  {
 	
 	
 	// Pollution bands
-	private double ndMed = 32.64e-6;
-	private double ndHigh = 65.768e-6;
+	private double ndMed = 97.435e-6;
+	private double ndHigh = 194.870e-6;
 	
-	private double cmMed = 0;
-	private double cmHigh = 0;
+	private double cmMed = 10.000e-6;
+	private double cmHigh = 35.000e-6;
 	
-	private double sdMed = 31.164e-6; 
-	private double sdHigh =  61.697e-6;
+	private double sdMed = 93.492e-6; 
+	private double sdHigh =  186.633e-6;
 
 	
 	public PollutionLevel(LocationInformation locRequested) throws MalformedURLException{
