@@ -16,10 +16,10 @@ public class SettingsScreen extends StackComponent {
     private static Image SETTINGS = Utils.loadImage("/settings_button.png");
 
     public SettingsScreen() {
-        this.mHomeScreen = ApplicationFrame.homeScreen;
+        this.mHomeScreen = ApplicationFrame.getHomeScreen();
         initialise();
 
-        this.input = ApplicationFrame.globalInput;
+        this.input = ApplicationFrame.getInput();
 /*
         ic = new ImageComponent(SETTINGS);
         ic.setSize(100, 100, false);
