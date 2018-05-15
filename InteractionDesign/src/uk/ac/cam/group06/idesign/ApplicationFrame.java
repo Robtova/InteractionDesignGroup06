@@ -50,6 +50,14 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		return settingsScreen;
 	}
 
+	public static void addComponent(GraphicComponent child) {
+		mPanel.addComponent(child);
+	}
+	
+	public static void removeComponent(GraphicComponent child) {
+		mPanel.removeComponent(child);
+	}
+	
 	@Override
 	public void initialise(GraphicPanel panel) {
 		globalInput = panel.getInput();
