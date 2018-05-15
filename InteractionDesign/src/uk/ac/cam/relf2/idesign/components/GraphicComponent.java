@@ -459,18 +459,24 @@ public class GraphicComponent {
 		if(!isVisible() || !isClickable()) return;
 		
 		if(inBounds(x, y)) {
-
 			if(clicked && mListener != null) {
 				mListener.onClicked(x, y);
 			}
-
-			Iterator<GraphicComponent> iterator = mComponents.iterator();
-			GraphicComponent comp;
-			while(iterator.hasNext()) {
-				comp = iterator.next();
-				comp.checkMouse(x-this.mPosXAbs, y-this.mPosYAbs, clicked);
-			}
 		} 
+		
+		int x2 = x + (this.getWidth() / 2 * (mOrigin % 3));
+		int y2 = y + (this.getHeight() / 2 * (mOrigin / 3));
+		if(mParent != null) {
+			x2 = x - mParent.getWidth() * this.mXBorder;
+			y2 = y - mParent.getHeight() * this.mYBorder;
+		}
+		
+		Iterator<GraphicComponent> iterator = mComponents.iterator();
+		GraphicComponent comp;
+		while(iterator.hasNext()) {
+			comp = iterator.next();
+			comp.checkMouse(x2-this.mPosXAbs, y2-this.mPosYAbs, clicked);
+		}
 	}
 	
 	/**
