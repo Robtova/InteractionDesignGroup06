@@ -3,7 +3,17 @@ package uk.ac.cam.group06.idesign;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Image;
+import java.net.MalformedURLException;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
+import uk.ac.cam.group06.api.API;
+import uk.ac.cam.group06.api.HourlyData;
+import uk.ac.cam.group06.api.HourlyLocationInformation;
+import uk.ac.cam.group06.api.store.DataStore;
 import uk.ac.cam.relf2.idesign.components.ComponentListener;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.ImageComponent;
@@ -32,14 +42,17 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	private TextComponent mTempText;
 	private GraphicComponent mTopBar;
 	private WeatherIconSmall mSmallIcon;
-	
-	private String mDate = "";
-	private float mTemperature = 15;
+
+	private Date mDate;
+	private int mTemperature = 15;
 	private String mIcon = null;
 	
 	private static Font mFont = new Font("Ariel", Font.PLAIN, 25);
+
+	private List<HourlyData> mTodaysData;
 	
-	public DayBreakdown() {
+	public DayBreakdown(Date date) {
+		mDate = date;
 		initialise();
 	}
 	
@@ -61,6 +74,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		mDateText.setBackgroundColor(new Color(180, 180, 180));
 		mDateText.setAlign(TextComponent.RIGHT);
 		mDateText.setFont(mFont);
+		mDateText.setText(DateFormat.getDateInstance(DateFormat.LONG).format(mDate));
 		mTopBar.addComponent(mDateText);
 		
 		mTempText = new TextComponent();
@@ -83,6 +97,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		
 		mTopBar.setComponentListener(this);
 		
+		initialiseDailyInfo();
 		intialiseInfoStack();
 	}
 	
@@ -90,16 +105,45 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		mStack = new StackComponent();
 		mStack.setY(72, true);
 		mStack.setSize(100, false, 72, true);
-		
-		addTimeEntry("00:00", "01n", 15, 0.9f, "20%");
-		addTimeEntry("03:00", "02n", 15, 0.6f, "20%");
-		addTimeEntry("06:00", "03d", 15, 0.3f, "20%");
-		addTimeEntry("09:00", "04d", 15, 0.9f, "20%");
-		addTimeEntry("12:00", "09d", 15, 0.6f, "20%");
-		addTimeEntry("15:00", "10d", 15, 0.3f, "20%");
-		addTimeEntry("18:00", "11d", 15, 0.6f, "20%");
-		addTimeEntry("21:00", "13n", 15, 0.9f, "20%");
+
+		for(int i = 0; i < mTodaysData.size(); i++) {
+			HourlyData hd = mTodaysData.get(i);
+			Date date = hd.getDate();
+
+			String time = Utils.leftPad(date.getHours()+"", 2, "0") + ":" + Utils.leftPad(date.getMinutes()+"", 2, "0");
+			addTimeEntry(time, hd.getIcon(), hd.getTemperature(), hd.getHumidity());
+		}
 	}
+
+	private void initialiseDailyInfo() {
+		HourlyLocationInformation hli = DataStore.getFiveDayForecast("cambridge", "uk");
+
+		this.mTodaysData = new ArrayList<HourlyData>();
+		
+		Date today;
+		Date tomorrow;
+		{
+			Calendar todayCal = Calendar.getInstance();
+			todayCal.setTime(mDate);
+			todayCal.set(Calendar.HOUR_OF_DAY, 0);
+			Calendar tomorrowCal = Calendar.getInstance();
+			tomorrowCal.setTime(mDate);
+			tomorrowCal.add(Calendar.DAY_OF_MONTH, 1);
+			tomorrowCal.set(Calendar.HOUR_OF_DAY, 0);
+			
+			today = todayCal.getTime();
+			tomorrow = tomorrowCal.getTime();
+		}
+		
+		for(int i = 0; i < hli.getForecast().size(); i++) {
+			HourlyData hd = hli.getForecast().get(i);
+			Date date = hd.getDate();
+			if(today.after(date) || tomorrow.before(date)) continue;
+
+			mTodaysData.add(hd);
+		}
+	}
+	
 	
 	/**
 	 * Add a time entry to the drop down stack of the day breakdown.
@@ -110,7 +154,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 * @param pollution - pollution level to be displayed
 	 * @param humidity - humidity to be displayed
 	 */
-	public void addTimeEntry(String time, String icon, float temperature, float pollution, String humidity) {
+	public void addTimeEntry(String time, String icon, String temperature, String humidity) {
 		GraphicComponent bar = new GraphicComponent();
 		bar.setSize(100, false, 72, true);
 		bar.setBackgroundColor(mStandardBackground);
@@ -131,9 +175,11 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		text.setBackgroundColor(new Color(180, 180, 180));
 		bar.addComponent(text);
 		
+		float level = 0.3f;
+		
 		Image img = SMALL_RED_ICON;
-		if(pollution <= 0.667) img = SMALL_YELLOW_ICON;
-		if(pollution <= 0.33) img = SMALL_GREEN_ICON;
+		if(level <= 0.667) img = SMALL_YELLOW_ICON;
+		if(level <= 0.33) img = SMALL_GREEN_ICON;
 		
 		ImageComponent warning = new ImageComponent(img);
 		warning.setSize(40, 40);
@@ -142,7 +188,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		bar.addComponent(warning);
 		
 		TextComponent text2 = new TextComponent();
-		text2.setText(humidity);
+		text2.setText(humidity+"%");
 		text2.setFont(mFont);
 		text2.setPosition(85, 50, false);
 		text2.setAlign(TextComponent.LEFT);
@@ -163,7 +209,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 * 
 	 * @param temp - temperature to be displayed
 	 */
-	public void setTemperature(float temp) {
+	public void setTemperature(int temp) {
 		mTemperature = temp;
 		mTempText.setText(mTemperature + "*C");
 	}
@@ -189,9 +235,9 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 * The date to be displayed.
 	 * @param date - date to be displayed
 	 */
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		mDate = date;
-		mDateText.setText(mDate);
+		mDateText.setText(DateFormat.getDateInstance(DateFormat.LONG).format(date));
 	}
 
 	/**
@@ -216,6 +262,24 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 */
 	public boolean getOpen() {
 		return mOpen;
+	}
+	
+	public void setAveragedData(boolean showWeather, boolean showTemp) {
+		if(showTemp || showWeather) {
+			int temp = 0;
+			int count = 0;
+
+			for(int i = 0; i < mTodaysData.size(); i++) {
+				HourlyData hd = mTodaysData.get(i);
+				Date date = hd.getDate();
+
+				temp += Integer.parseInt(hd.getTemperature());
+				count++;
+				
+				if(showWeather && date.getHours() > 10 && date.getHours() <= 13) this.setIcon(hd.getIcon());
+			}
+			if(showTemp) setTemperature(temp/ count);
+		}
 	}
 
 	@Override

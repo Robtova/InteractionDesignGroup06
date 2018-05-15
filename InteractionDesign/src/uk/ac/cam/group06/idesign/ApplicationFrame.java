@@ -4,13 +4,22 @@ import java.awt.Color;
 
 import javax.swing.JFrame;
 
-import uk.ac.cam.relf2.idesign.components.Input;
+import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
 import uk.ac.cam.relf2.idesign.components.ImageComponent;
+import uk.ac.cam.relf2.idesign.components.Input;
 import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
+	
+	private static Input globalInput;
+	private static GraphicComponent homeScreen;
+	private static GraphicComponent settingsScreen;
+	private static GraphicComponent breakdownScreen;
+
+	private static GraphicPanel mPanel;
+	
 	public ApplicationFrame(int width, int height) {
 		this.setSize(width, height);
 		
@@ -20,58 +29,41 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		this.setVisible(true);
 		this.setBackground(new Color(0,0,0));
 		
-		GraphicPanel panel = new GraphicPanel(this);
-		panel.setBackgroundColor(new Color(249, 249, 249));
-		panel.addToFrame(this);
+		mPanel = new GraphicPanel(this);
+		mPanel.setBackgroundColor(new Color(249, 249, 249));
+		mPanel.addToFrame(this);
+	}
+	
+	public static Input getInput() {
+		return globalInput;
+	}
+	
+	public static GraphicComponent getHomeScreen() {
+		return homeScreen;
+	}
+	
+	public static GraphicComponent getBreakdownScreen() {
+		return breakdownScreen;
+	}
+	
+	public static GraphicComponent getSettingsScreen() {
+		return settingsScreen;
 	}
 
-	public static GraphicComponent homeScreen;
-    public static Input globalInput;
 	@Override
 	public void initialise(GraphicPanel panel) {
-        globalInput = panel.getInput();
-        SettingsScreen settingsScreen = new SettingsScreen();
-
-		homeScreen = initialiseHomeScreen(panel);
-		panel.addComponent(homeScreen);
-
-		GraphicComponent breakdownScreen = new BreakdownScreen();
-		breakdownScreen.setPosition(0, 92, false);
-		panel.addComponent(breakdownScreen);
-
-
-        settingsScreen.setPosition(0, 72, false);
-        panel.addComponent(settingsScreen);
+		globalInput = panel.getInput();
+		
+		homeScreen = new HomeScreen();
+		mPanel.addComponent(homeScreen);
+		
+		breakdownScreen = new BreakdownScreen();
+		mPanel.addComponent(breakdownScreen);
+		
+//		SettingsScreen settingsScreen = new SettingsScreen();
+//      panel.addComponent(settingsScreen);
 	}
-	
-	private GraphicComponent initialiseHomeScreen(GraphicPanel panel) {
-		GraphicComponent screen = new GraphicComponent();
-		screen.setBackgroundColor(new Color(250, 250, 250));
-		screen.setSize(100, 100, false);
-		
-		WarningRing ring = new WarningRing();
-		ring.setSize(60, 60, false);
-		ring.setPosition(50, 50, false);
-		screen.addComponent(ring);
-		ring.keepAspect(true);
-		ring.setOrigin(ImageComponent.MIDDLE_CENTRE);
-		
-		WeatherIcon icon = new WeatherIcon();
-		icon.setSize(55, 55, false);
-		icon.setPosition(22.5f, 22.5f, false);
-		ring.addComponent(icon);
 
-		MoreOptionsButton dots = new MoreOptionsButton();
-		dots.setBorder(GraphicComponent.SCREEN_RIGHT, GraphicComponent.SCREEN_TOP);
-		dots.setPosition(-120, 20);
-		dots.setSize(100, 100);
-		screen.addComponent(dots);
-		
-		icon.setIcon("02d");
-		
-		return screen;
-	}
-	
 	public static void main(String[] args) {
 		ApplicationFrame frame = new ApplicationFrame(600, 900);
 	}
