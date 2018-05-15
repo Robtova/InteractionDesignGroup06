@@ -106,6 +106,6 @@ public class Utils {
 		
 		if(addD > 0) return date;
 		
-		return date += ", " + Utils.leftPad("" + (cal.get(Calendar.AM_PM)*12 + cal.get(Calendar.HOUR)), 2, "0") + ":" + Utils.leftPad("" + cal.get(Calendar.MINUTE), 2, "0");
+		return date += ", " + Utils.leftPad("" + (cal.get(Calendar.HOUR_OF_DAY)), 2, "0") + ":" + Utils.leftPad("" + cal.get(Calendar.MINUTE), 2, "0");
 	}
 }
