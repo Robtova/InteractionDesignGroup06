@@ -33,7 +33,7 @@ public class HomeScreen extends GraphicComponent {
 
 		MoreOptionsButton dots = new MoreOptionsButton();
 		dots.setBorder(GraphicComponent.SCREEN_RIGHT, GraphicComponent.SCREEN_TOP);
-		dots.setPosition(-120, 20);
+		dots.setPosition(-20, 20);
 		dots.setSize(100, 100);
 		addComponent(dots);
 		

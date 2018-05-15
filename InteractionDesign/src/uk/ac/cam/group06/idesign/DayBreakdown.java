@@ -267,18 +267,16 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	public void setAveragedData(boolean showWeather, boolean showTemp) {
 		if(showTemp || showWeather) {
 			int temp = 0;
-			int count = 0;
 
 			for(int i = 0; i < mTodaysData.size(); i++) {
 				HourlyData hd = mTodaysData.get(i);
 				Date date = hd.getDate();
 
-				temp += Integer.parseInt(hd.getTemperature());
-				count++;
+				temp = Math.max(Integer.parseInt(hd.getTemperature()), temp);
 				
 				if(showWeather && date.getHours() > 10 && date.getHours() <= 13) this.setIcon(hd.getIcon());
 			}
-			if(showTemp) setTemperature(temp/ count);
+			if(showTemp) setTemperature(temp);
 		}
 	}
 

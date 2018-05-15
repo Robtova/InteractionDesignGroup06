@@ -4,12 +4,17 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.HashMap;
+import java.util.Map;
 
-import uk.ac.cam.relf2.idesign.components.*;
+import uk.ac.cam.relf2.idesign.components.ComponentListener;
+import uk.ac.cam.relf2.idesign.components.GraphicComponent;
+import uk.ac.cam.relf2.idesign.components.ImageComponent;
+import uk.ac.cam.relf2.idesign.components.Utils;
 
 public class MoreOptionsButton extends GraphicComponent implements ComponentListener {
 	
-	private ImageComponent mDots, mSettingsButton;
+	private ImageComponent mDots;
 	private boolean mOpen = false;
 	private float mExtension = 0;
 	
@@ -17,23 +22,20 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 			SEARCH = Utils.loadImage("/search_button.png"),
 			TRIPLE_DOTS = Utils.loadImage("/triple_dot.png");
 	
+	private Map<ImageComponent, GraphicComponent> mButtons = new HashMap<ImageComponent, GraphicComponent>();
+	
 	public MoreOptionsButton() {
 		mDots = new ImageComponent(TRIPLE_DOTS);
 		mDots.setSize(100, 100, false);
 		this.addComponent(mDots);
-
-		mSettingsButton = new ImageComponent(SETTINGS);
-		mSettingsButton.setSize(80, 80, false);
-        mSettingsButton.setComponentListener(new ComponentListener() {
-            @Override
-            public void onClicked(int x, int y) {
-                SettingsScreen.singleton.setVisible(!SettingsScreen.singleton.isVisible());
-            }
-        });
-		this.addComponent(mSettingsButton);
+		
+		this.setOrigin(TOP_RIGHT);
 		
 		this.setBackgroundColor(new Color(230, 230, 230));
 		this.setComponentListener(this);
+		
+		addButton(SETTINGS, new SettingsScreen());
+		addButton(SEARCH, null);
 	}
 	
 	@Override
@@ -41,24 +43,54 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		if(!mOpen) {
 			mExtension = 0;
 			mDots.setRotation(0);
-            mSettingsButton.setVisible(false);
+            for(ImageComponent img : mButtons.keySet()) {
+            	img.setVisible(false);
+            }
 			return;
 		}
 		
 		int height = (int) (getHeight() * (106d/128d));
-		mExtension = Math.min(mExtension + 40, height * 2);
-		mDots.setRotation(mExtension*Math.PI/(height * 4));
-		int ext = (int) mExtension;
 		
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(this.getBackgroundColor());
-		g.fillRect(-(int) (mExtension - getWidth() * 0.5), (getHeight() - height) / 2, ext, height);
-		g.fillOval(-ext, (getHeight() - height) / 2, height, height);
+		g.fillRect(-(int) (mExtension - getWidth() * 0.5), (getHeight() - height) / 2, (int) mExtension, height);
+		g.fillOval((int) -mExtension, (getHeight() - height) / 2, height, height);
 
-        mSettingsButton.setPosition(-ext + height, (getHeight() - height) / 2);
-		g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g.drawImage(SEARCH, -ext, (getHeight() - height) / 2, height, height, null);
-		if(ext >= height) mSettingsButton.setVisible(true);
+		int off = 0;
+		for(ImageComponent button : mButtons.keySet()) {
+			button.setPosition(-mExtension + height * off, (getHeight() - height) / 2);
+			if(mExtension >= height *  off) button.setVisible(true);
+			off++;
+        }
+	}
+	
+	@Override
+	public void update() {
+		int height = (int) (getHeight() * (106d/128d));
+		int maxExtent = height * mButtons.size();
+		mExtension = Math.min(mExtension + 40, maxExtent);
+		mDots.setRotation(mExtension*Math.PI/(2*maxExtent));
+	}
+
+	/**
+	 * Add a button to be shown when more options is clicked.
+	 * 
+	 * @param image - the image to display as the button
+	 * @param toOpen - the screen to open when the button is pressed
+	 */
+	public void addButton(Image image, GraphicComponent toOpen) {
+		ImageComponent button = new ImageComponent(image);
+		button.setSize(106f/128f * 100f, 106f/128f * 100f, false);
+		button.setComponentListener(new ComponentListener() {
+            @Override
+            public void onClicked(int x, int y) {
+            	if(toOpen != null) {
+            		ApplicationFrame.addComponent(mButtons.get(button));
+            	}
+            }
+        });
+		this.mButtons.put(button, toOpen);
+		this.addComponent(button);
 	}
 
 	@Override
