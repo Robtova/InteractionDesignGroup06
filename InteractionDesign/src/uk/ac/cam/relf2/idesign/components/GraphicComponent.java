@@ -379,6 +379,38 @@ public class GraphicComponent {
 	}
 	
 	/**
+	 * Returns the absolute x position of the component in the screen space in pixels.
+	 * 
+	 * @return the absolute x position
+	 */
+	public int getAbsoluteX() {
+		int x = this.mPosXAbs - (this.getWidth() / 2 * (mOrigin % 3));
+
+		if(mParent != null) {
+			x += mParent.getWidth() * this.mXBorder;
+			x += mParent.getAbsoluteX();
+		}
+		
+		return x;
+	}
+	
+	/**
+	 * Returns the absolute y position of the component in the screen space in pixels.
+	 * 
+	 * @return the absolute y position
+	 */
+	public int getAbsoluteY() {
+		int y = this.mPosYAbs - (this.getHeight() / 2 * (mOrigin / 3));
+
+		if(mParent != null) {
+			y += mParent.getHeight() * this.mYBorder;
+			y += mParent.getAbsoluteY();
+		}
+		
+		return y;
+	}
+	
+	/**
 	* Set the rotation of the component when drawn.
 	* 
 	* @param nRot - set the rotation to this value (in Radians)
@@ -467,18 +499,27 @@ public class GraphicComponent {
 		int x2 = x + (this.getWidth() / 2 * (mOrigin % 3));
 		int y2 = y + (this.getHeight() / 2 * (mOrigin / 3));
 		if(mParent != null) {
-			x2 = x - mParent.getWidth() * this.mXBorder;
-			y2 = y - mParent.getHeight() * this.mYBorder;
+			x2 -= mParent.getWidth() * this.mXBorder;
+			y2 -= mParent.getHeight() * this.mYBorder;
 		}
+		x2 -= this.getX();
+		y2 -= this.getY();
 		
 		Iterator<GraphicComponent> iterator = mComponents.iterator();
 		GraphicComponent comp;
 		while(iterator.hasNext()) {
 			comp = iterator.next();
-			comp.checkMouse(x2-this.mPosXAbs, y2-this.mPosYAbs, clicked);
+			comp.checkMouse(x2, y2, clicked);
 		}
 	}
 	
+	public void clearComponents() {
+		Iterator<GraphicComponent> iterator = mComponents.iterator();
+		while(iterator.hasNext()) {
+			GraphicComponent comp = iterator.next();
+			removeComponent(comp);
+		}
+	}
 	/**
 	 * Returns whether the coordinates are within the bounds of the components.
 	 * 

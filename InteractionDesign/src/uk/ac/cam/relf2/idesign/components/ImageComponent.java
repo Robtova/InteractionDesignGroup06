@@ -11,7 +11,7 @@ public class ImageComponent extends GraphicComponent {
 	private double mAspect;
 	
 	public ImageComponent(Image image) {
-		this.mImage = image;
+		this.setImage(image);
 	}
 	
 	/**
