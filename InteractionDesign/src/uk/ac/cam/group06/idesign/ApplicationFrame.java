@@ -14,11 +14,13 @@ import uk.ac.cam.relf2.idesign.components.PanelListener;
 public class ApplicationFrame extends JFrame implements PanelListener {
 	
 	private static Input globalInput;
-	private static GraphicComponent homeScreen;
-	private static GraphicComponent settingsScreen;
-	private static GraphicComponent breakdownScreen;
+	private static HomeScreen homeScreen;
+	private static BreakdownScreen breakdownScreen;
 
 	private static GraphicPanel mPanel;
+	
+	private static String mCity = "cambridge";
+	private static String mCountryCode = "gb";
 	
 	public ApplicationFrame(int width, int height) {
 		this.setSize(width, height);
@@ -45,10 +47,6 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 	public static GraphicComponent getBreakdownScreen() {
 		return breakdownScreen;
 	}
-	
-	public static GraphicComponent getSettingsScreen() {
-		return settingsScreen;
-	}
 
 	public static void addComponent(GraphicComponent child) {
 		mPanel.addComponent(child);
@@ -56,6 +54,20 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 	
 	public static void removeComponent(GraphicComponent child) {
 		mPanel.removeComponent(child);
+	}
+	
+	public static String getCountryCode() {
+		return mCountryCode;
+	}
+	
+	public static String getCity() {
+		return mCity;
+	}
+	
+	public static void setCity(String city) {
+		mCity = city;
+		homeScreen.reloadData();
+		breakdownScreen.reloadData();
 	}
 	
 	@Override
@@ -67,9 +79,6 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		
 		breakdownScreen = new BreakdownScreen();
 		mPanel.addComponent(breakdownScreen);
-		
-//		SettingsScreen settingsScreen = new SettingsScreen();
-//      panel.addComponent(settingsScreen);
 	}
 
 	public static void main(String[] args) {

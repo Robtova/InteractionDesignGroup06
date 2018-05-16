@@ -1,22 +1,15 @@
 package uk.ac.cam.group06.idesign;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
-import uk.ac.cam.group06.api.API;
 import uk.ac.cam.group06.api.LocationInformation;
 import uk.ac.cam.group06.api.store.DataStore;
 import uk.ac.cam.relf2.idesign.components.ComponentListener;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
-import uk.ac.cam.relf2.idesign.components.ImageComponent;
-import uk.ac.cam.relf2.idesign.components.Input;
 import uk.ac.cam.relf2.idesign.components.StackComponent;
-import uk.ac.cam.relf2.idesign.components.TextComponent;
-import uk.ac.cam.relf2.idesign.components.Utils;
 
 public class BreakdownScreen extends StackComponent {
 
@@ -26,6 +19,8 @@ public class BreakdownScreen extends StackComponent {
 	private float mPercentageY = 0;
 
 	private int mCoverHeight = 400;
+	
+	private List<DayBreakdown> mBreakdowns = new ArrayList<DayBreakdown>();
 
 	public BreakdownScreen() {
 		initialise();
@@ -55,9 +50,20 @@ public class BreakdownScreen extends StackComponent {
 			setPosition(0, mPercentageY, false);
 		}
 	}
+	
+	public void reloadData() {
+		LocationInformation li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
+
+		mTopBar.reloadData();
+		mTopBar.setTemperature(Integer.parseInt(li.getTemperature()));
+		
+		for(DayBreakdown db : mBreakdowns) {
+			db.reloadData();
+		}
+	}
 
 	private void initialise() {
-		LocationInformation li = DataStore.getCurrentInformation("cambridge", "uk");
+		LocationInformation li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
 		
 		this.setBackgroundColor(new Color(249, 249, 249));
 		this.setSize(100, 100, false);
@@ -91,6 +97,8 @@ public class BreakdownScreen extends StackComponent {
 			d.setAveragedData(true, true);
 			d.setSize(100, false, 72, true);
 			addComponent(d);
+			
+			mBreakdowns.add(d);
 		}
 		
 		GraphicComponent cover = new GraphicComponent();

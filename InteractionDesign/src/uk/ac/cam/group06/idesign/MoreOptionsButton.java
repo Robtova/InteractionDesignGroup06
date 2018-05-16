@@ -35,19 +35,12 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		this.setComponentListener(this);
 		
 		addButton(SETTINGS, new SettingsScreen());
-		addButton(SEARCH, null);
+		addButton(SEARCH, new SearchScreen());
 	}
 	
 	@Override
 	public void paint(Graphics2D g) {
-		if(!mOpen) {
-			mExtension = 0;
-			mDots.setRotation(0);
-            for(ImageComponent img : mButtons.keySet()) {
-            	img.setVisible(false);
-            }
-			return;
-		}
+		if(!mOpen) return;
 		
 		int height = (int) (getHeight() * (106d/128d));
 		
@@ -55,21 +48,29 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 		g.setColor(this.getBackgroundColor());
 		g.fillRect(-(int) (mExtension - getWidth() * 0.5), (getHeight() - height) / 2, (int) mExtension, height);
 		g.fillOval((int) -mExtension, (getHeight() - height) / 2, height, height);
-
+	}
+	
+	@Override
+	public void update() {
+		if(!mOpen) {
+			mExtension = 0;
+			mDots.setRotation(0);
+            for(ImageComponent img : mButtons.keySet()) 
+            	img.setVisible(false);
+			return;
+		}
+		
+		int height = (int) (getHeight() * (106d/128d));
+		int maxExtent = height * mButtons.size();
+		mExtension = Math.min(mExtension + 40, maxExtent);
+		mDots.setRotation(mExtension*Math.PI/(2*maxExtent));
+		
 		int off = 0;
 		for(ImageComponent button : mButtons.keySet()) {
 			button.setPosition(-mExtension + height * off, (getHeight() - height) / 2);
 			if(mExtension >= height *  off) button.setVisible(true);
 			off++;
         }
-	}
-	
-	@Override
-	public void update() {
-		int height = (int) (getHeight() * (106d/128d));
-		int maxExtent = height * mButtons.size();
-		mExtension = Math.min(mExtension + 40, maxExtent);
-		mDots.setRotation(mExtension*Math.PI/(2*maxExtent));
 	}
 
 	/**
@@ -80,16 +81,16 @@ public class MoreOptionsButton extends GraphicComponent implements ComponentList
 	 */
 	public void addButton(Image image, GraphicComponent toOpen) {
 		ImageComponent button = new ImageComponent(image);
+		this.mButtons.put(button, toOpen);
 		button.setSize(106f/128f * 100f, 106f/128f * 100f, false);
 		button.setComponentListener(new ComponentListener() {
             @Override
             public void onClicked(int x, int y) {
-            	if(toOpen != null) {
+            	if(mButtons.get(button) != null) {
             		ApplicationFrame.addComponent(mButtons.get(button));
             	}
             }
         });
-		this.mButtons.put(button, toOpen);
 		this.addComponent(button);
 	}
 

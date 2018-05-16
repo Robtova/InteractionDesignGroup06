@@ -97,7 +97,6 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		
 		mTopBar.setComponentListener(this);
 		
-		initialiseDailyInfo();
 		intialiseInfoStack();
 	}
 	
@@ -106,17 +105,11 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		mStack.setY(72, true);
 		mStack.setSize(100, false, 72, true);
 
-		for(int i = 0; i < mTodaysData.size(); i++) {
-			HourlyData hd = mTodaysData.get(i);
-			Date date = hd.getDate();
-
-			String time = Utils.leftPad(date.getHours()+"", 2, "0") + ":" + Utils.leftPad(date.getMinutes()+"", 2, "0");
-			addTimeEntry(time, hd.getIcon(), hd.getTemperature(), hd.getHumidity());
-		}
+		reloadData();
 	}
 
 	private void initialiseDailyInfo() {
-		HourlyLocationInformation hli = DataStore.getFiveDayForecast("cambridge", "uk");
+		HourlyLocationInformation hli = DataStore.getFiveDayForecast(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
 
 		this.mTodaysData = new ArrayList<HourlyData>();
 		
@@ -264,7 +257,12 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		return mOpen;
 	}
 	
+	private boolean mShowWeather = false, mShowTemperature;
+	
 	public void setAveragedData(boolean showWeather, boolean showTemp) {
+		this.mShowWeather = showWeather;
+		this.mShowTemperature = showTemp;
+		
 		if(showTemp || showWeather) {
 			int temp = 0;
 
@@ -288,5 +286,20 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	@Override
 	public void onClicked(int x, int y) {
 		setOpen(!mOpen);
+	}
+
+	public void reloadData() {
+		initialiseDailyInfo();
+		mStack.clearComponents();
+		
+		for(int i = 0; i < mTodaysData.size(); i++) {
+			HourlyData hd = mTodaysData.get(i);
+			Date date = hd.getDate();
+
+			String time = Utils.leftPad(date.getHours()+"", 2, "0") + ":" + Utils.leftPad(date.getMinutes()+"", 2, "0");
+			addTimeEntry(time, hd.getIcon(), hd.getTemperature(), hd.getHumidity());
+		}
+		
+		setAveragedData(this.mShowWeather, this.mShowTemperature);
 	}
 }
