@@ -151,6 +151,15 @@ public class API {
 		return latitude;
 	}
 	
+	/**
+	 * Creates a LocationInformation object which stores the values of the pollution levels.
+	 * Once you create a LocationInformation object, you can pass it through this function to add
+	 * pollution level information - this can be quite costly as it makes three http requests so
+	 * only do it if absolutely necessary
+	 * @param locInfo - an already created LocationInformation object
+	 * @return LocationInformation
+	 * @throws MalformedURLException
+	 */
 	private static LocationInformation getPollutionLevels(LocationInformation locInfo) throws MalformedURLException { 
 		updateLongitudeAndLatitude(locInfo.getCityName(), locInfo.getCountryCode());
 		
@@ -208,6 +217,10 @@ public class API {
 		return locInfo;
 	}
 	
+	/**
+	 * Creates a list of {@code ISOCode} Objects for the Search capabilities on the app. 
+	 * @return {@code ArrayList<ISOCode>}
+	 */
 	public static ArrayList<ISOCode> getISOCodeList() {
 		ArrayList<ISOCode> countryCodes = new ArrayList<ISOCode>();
 		Scanner scanner;
