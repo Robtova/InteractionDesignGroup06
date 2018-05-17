@@ -1,10 +1,7 @@
 package uk.ac.cam.group06.api.store;
 
 import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import uk.ac.cam.group06.api.API;
@@ -25,16 +22,15 @@ public class DataStore {
 	 * @param city - the city for which data is wanted
 	 * @param countryCode - the country code for the location
 	 * @return LocationInformation object with current weather info
+	 * @throws CityNotFoundException 
 	 */
-	public static LocationInformation getCurrentInformation(String city, String countryCode) {
+	public static LocationInformation getCurrentInformation(String city, String countryCode) throws CityNotFoundException {
 		if(!mCurrentInfo.containsKey(city+countryCode)) {
 			try {
 				mCurrentInfo.put(city+countryCode, API.getCurrentInformation(city, countryCode));
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return getCurrentInformation("cambridge", "uk");
-			} catch (CityNotFoundException e) {
-				e.printStackTrace();
 			}
 		}
 		return mCurrentInfo.get(city+countryCode);
@@ -47,16 +43,15 @@ public class DataStore {
 	 * @param city - the city for which data is wanted
 	 * @param countryCode - the country code for the location
 	 * @return HourlyLocationInformation object with five day forecast information
+	 * @throws CityNotFoundException 
 	 */
-	public static HourlyLocationInformation getFiveDayForecast(String city, String countryCode) {
+	public static HourlyLocationInformation getFiveDayForecast(String city, String countryCode) throws CityNotFoundException {
 		if(!mHourlyInfo.containsKey(city+countryCode)) {
 			try {
 				mHourlyInfo.put(city+countryCode, API.getFiveDayForecast(city, countryCode));
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return getFiveDayForecast("cambridge", "uk");
-			} catch (CityNotFoundException e) {
-				e.printStackTrace();
 			}
 		}
 		return mHourlyInfo.get(city+countryCode);
