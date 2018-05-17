@@ -5,21 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
-import javax.json.JsonValue;
-
-import org.junit.Assert;
 
 public class API {
 	public static final String owApiKey = "6c5c12fe2311616982b42083d9c5a76e";
@@ -229,21 +225,17 @@ public class API {
 		ArrayList<ISOCode> countryCodes = new ArrayList<ISOCode>();
 		Scanner scanner;
 		
-		try {
-			scanner = new Scanner(new File("ISO_Countrycodes.csv"));
-			scanner.useDelimiter(",");
+		scanner = new Scanner(API.class.getResourceAsStream("/ISO_Countrycodes.csv"));
+		scanner.useDelimiter(",");
+		scanner.nextLine();
+		while(scanner.hasNextLine()){
+			String iso = scanner.next();
+			String country = scanner.next();
+			
+			countryCodes.add(new ISOCode(country, iso));
 			scanner.nextLine();
-		    while(scanner.hasNextLine()){
-		    	String iso = scanner.next();
-		    	String country = scanner.next();
-		    	
-		    	countryCodes.add(new ISOCode(country, iso));
-		    	scanner.nextLine();
-		    }
-		    scanner.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
+		scanner.close();
 
 		return countryCodes;
 	}

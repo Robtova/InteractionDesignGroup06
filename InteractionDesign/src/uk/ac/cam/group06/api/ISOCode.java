@@ -6,7 +6,7 @@ public class ISOCode {
 	
 	public ISOCode(String countryName, String isoCode) {
 		this.mCountryName = countryName;
-		this.mISOCode = isoCode;
+		this.mISOCode = isoCode.toLowerCase();
 	}
 	
 	/*
@@ -23,4 +23,28 @@ public class ISOCode {
 		return this.mISOCode;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mISOCode == null) ? 0 : mISOCode.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ISOCode other = (ISOCode) obj;
+		if (mISOCode == null) {
+			if (other.mISOCode != null)
+				return false;
+		} else if (!mISOCode.equals(other.mISOCode))
+			return false;
+		return true;
+	}
 }
