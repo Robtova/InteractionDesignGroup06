@@ -7,16 +7,14 @@ import javax.swing.JFrame;
 
 import uk.ac.cam.group06.api.API;
 import uk.ac.cam.group06.api.ISOCode;
-import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
-import uk.ac.cam.relf2.idesign.components.ImageComponent;
 import uk.ac.cam.relf2.idesign.components.Input;
 import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
 	
-	ArrayList<ISOCode> isoCodeList = API.getISOCodeList();
+	public static final ArrayList<ISOCode> isoCodeList = API.getISOCodeList();
 	
 	private static Input globalInput;
 	private static HomeScreen homeScreen;
@@ -25,7 +23,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 	private static GraphicPanel mPanel;
 	
 	private static String mCity = "Cambridge";
-	private static String mCountryCode = "gb";
+	private static ISOCode mCountryCode = new ISOCode("gb", "gb");
 	
 	public ApplicationFrame(int width, int height) {
 		this.setSize(width, height);
@@ -61,6 +59,10 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 	}
 	
 	public static String getCountryCode() {
+		return mCountryCode.getISOCode();
+	}
+	
+	public static ISOCode getISOObject() {
 		return mCountryCode;
 	}
 	
@@ -68,7 +70,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		return mCity;
 	}
 	
-	public static void setCityAndCountry(String city, String country) {
+	public static void setCityAndCountry(String city, ISOCode country) {
 		mCity = city;
 		mCountryCode = country;
 		homeScreen.reloadData();

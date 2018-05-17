@@ -1,11 +1,6 @@
 package uk.ac.cam.group06.idesign;
 
 import uk.ac.cam.group06.api.LocationInformation;
-import java.net.MalformedURLException;
-import java.util.HashMap;
-
-import uk.ac.cam.group06.api.API;
-import uk.ac.cam.group06.api.CityNotFoundException;
 
 public class PollutionLevel  {
 	private int mLevel = 0;					// simplified pollution ranking: 0-green, 1-yellow, 2-red
@@ -28,14 +23,7 @@ public class PollutionLevel  {
 
 	
 	public PollutionLevel(LocationInformation locRequested){
-		// creates instance of PollutionLevel using information from location
-		try {
-			locinfo = API.getCurrentInformation(locRequested.getCityName(), locRequested.getCountryCode());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (CityNotFoundException e) {
-			e.printStackTrace();
-		}
+		locinfo = locRequested;
 		
 		nitrogenDioxide = Double.isNaN(locinfo.getNitrogenDioxide()) ? 0.0 : locinfo.getNitrogenDioxide();
 		carbonMonoxide = Double.isNaN(locinfo.getCarbonMonoxide()) ? 0.0 : locinfo.getCarbonMonoxide();
