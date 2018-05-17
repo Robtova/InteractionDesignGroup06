@@ -1,12 +1,9 @@
 package uk.ac.cam.group06.idesign;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
-import uk.ac.cam.group06.api.API;
-import uk.ac.cam.group06.api.ISOCode;
 import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
@@ -16,15 +13,13 @@ import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
 	
-	public static ArrayList<ISOCode> isoList = API.getISOCodeList();
-	
 	private static Input globalInput;
 	private static HomeScreen homeScreen;
 	private static BreakdownScreen breakdownScreen;
 
 	private static GraphicPanel mPanel;
 	
-	private static String mCity = "cambridge";
+	private static String mCity = "Cambridge";
 	private static String mCountryCode = "gb";
 	
 	public ApplicationFrame(int width, int height) {
@@ -33,7 +28,6 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setResizable(true);
-		this.setVisible(true);
 		this.setBackground(new Color(0,0,0));
 		
 		mPanel = new GraphicPanel(this);
@@ -69,8 +63,9 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		return mCity;
 	}
 	
-	public static void setCity(String city) {
+	public static void setCityAndCountry(String city, String country) {
 		mCity = city;
+		mCountryCode = country;
 		homeScreen.reloadData();
 		breakdownScreen.reloadData();
 	}
@@ -84,6 +79,8 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		
 		breakdownScreen = new BreakdownScreen();
 		mPanel.addComponent(breakdownScreen);
+		
+		setVisible(true);
 	}
 
 	public static void main(String[] args) {
