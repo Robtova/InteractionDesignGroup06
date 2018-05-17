@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -19,6 +21,7 @@ import org.junit.Test;
 import uk.ac.cam.group06.api.API;
 import uk.ac.cam.group06.api.CityNotFoundException;
 import uk.ac.cam.group06.api.HourlyLocationInformation;
+import uk.ac.cam.group06.api.ISOCode;
 import uk.ac.cam.group06.api.LocationInformation;
 
 
@@ -72,9 +75,20 @@ public class APITest {
 	
 	@Test
 	public void checkCountryCodes_Uzbekistan() {
-		HashMap<String, String> countryCode = API.getCountrycodeMap();
+		ArrayList<ISOCode> isoCodes = API.getISOCodeList();
 		
-		Assert.assertEquals(countryCode.get("UZ"), "Uzbekistan");
+		//Find UZ
+		Iterator<ISOCode> it = isoCodes.iterator();
+		String cityName = "";
+		while(it.hasNext()) {
+			ISOCode is = it.next();
+			
+			if(is.getISOCode().equals("UZ")){
+				cityName = is.toString();
+			}
+		}
+
+		Assert.assertEquals(cityName, "Uzbekistan");
 	}
 
 }

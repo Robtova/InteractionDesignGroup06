@@ -1,11 +1,12 @@
 package uk.ac.cam.group06.idesign;
 
 import java.awt.Color;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
 import uk.ac.cam.group06.api.API;
+import uk.ac.cam.group06.api.ISOCode;
 import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.GraphicPanel;
@@ -15,7 +16,7 @@ import uk.ac.cam.relf2.idesign.components.PanelListener;
 
 public class ApplicationFrame extends JFrame implements PanelListener {
 	
-	public static HashMap<String, String> countryToISO = API.getCountrycodeMap();
+	public static ArrayList<ISOCode> isoList = API.getISOCodeList();
 	
 	private static Input globalInput;
 	private static HomeScreen homeScreen;

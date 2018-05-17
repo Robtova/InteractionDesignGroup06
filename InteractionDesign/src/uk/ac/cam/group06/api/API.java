@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -207,8 +208,8 @@ public class API {
 		return locInfo;
 	}
 	
-	public static HashMap<String, String> getCountrycodeMap(){
-		HashMap<String, String> countryCodes = new HashMap<String, String>();
+	public static ArrayList<ISOCode> getISOCodeList() {
+		ArrayList<ISOCode> countryCodes = new ArrayList<ISOCode>();
 		Scanner scanner;
 		
 		try {
@@ -219,7 +220,7 @@ public class API {
 		    	String iso = scanner.next();
 		    	String country = scanner.next();
 		    	
-		    	countryCodes.put(iso, country);
+		    	countryCodes.add(new ISOCode(country, iso));
 		    	scanner.nextLine();
 		    }
 		    scanner.close();
@@ -233,9 +234,5 @@ public class API {
 	//PRIVATE METHODS
 	private static int kelvinToCelsius(float temp) {
 		return (int) (temp - 273.15);
-	}
-	
-	public static void main(String[] args) {
-		API.getCountrycodeMap();
 	}
 }
