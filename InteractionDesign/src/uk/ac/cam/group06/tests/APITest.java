@@ -28,7 +28,7 @@ import uk.ac.cam.group06.api.LocationInformation;
 public class APITest {
 
 	@Before
-	public void setup() throws MalformedURLException{
+	public void setup() throws MalformedURLException, CityNotFoundException{
 		API.updateLongitudeAndLatitude("cambridge", "uk");
 	}
 	
@@ -38,38 +38,38 @@ public class APITest {
 	}
 	
 	@Test
-	public void getFiveDayForecast_forCambridge_shouldBeNonEmpty() throws MalformedURLException {
+	public void getFiveDayForecast_forCambridge_shouldBeNonEmpty() throws MalformedURLException, CityNotFoundException {
 		API.getFiveDayForecast("cambridge", "uk");
 		Assert.assertEquals(false, API.getFiveDayForecast("cambridge", "uk").getForecast().isEmpty());
 	}
 	
 	@Test
-	public void getCloudiness_forCambridge_notNull() throws MalformedURLException {
+	public void getCloudiness_forCambridge_notNull() throws MalformedURLException, CityNotFoundException {
 		LocationInformation li = API.getCurrentInformation("cambridge", "uk");
 		Assert.assertNotEquals(null, li.getCloudCover());
 	}
 	
 	@Test
-	public void getNitrogenDioxide_forCambridge() throws MalformedURLException{
+	public void getNitrogenDioxide_forCambridge() throws MalformedURLException, CityNotFoundException{
 		Assert.assertNotEquals(Double.NaN, API.getCurrentInformation("cambridge", "uk").getCarbonMonoxide());
 	}
 	
 	@Test
-	public void checkHourlyData_forCambridge() throws MalformedURLException {
+	public void checkHourlyData_forCambridge() throws MalformedURLException, CityNotFoundException {
 		HourlyLocationInformation hli = API.getFiveDayForecast("cambridge", "uk");
 
 		Assert.assertEquals(false, hli.getForecast().isEmpty());
 	}
 	
 	@Test
-	public void checkLocationObject() throws MalformedURLException {
+	public void checkLocationObject() throws MalformedURLException, CityNotFoundException {
 		System.out.println(API.getCurrentInformation("cambridge", "uk").getCityName());
 		
 		Assert.assertNotEquals(null, API.getCurrentInformation("cambridge", "uk").getCityName());
 	}
 	
 	@Test (expected = CityNotFoundException.class)
-	public void validCity_booleanCheck() throws IOException {
+	public void validCity_booleanCheck() throws IOException, CityNotFoundException {
 		API.getCurrentInformation("cambrdge", "uk");
 	}
 	

@@ -31,8 +31,9 @@ public class API {
 	 * @param city
 	 * @param countryCode
 	 * @throws MalformedURLException
+	 * @throws CityNotFoundException 
 	 */
-	public static void updateLongitudeAndLatitude(String city, String countryCode) throws MalformedURLException {
+	public static void updateLongitudeAndLatitude(String city, String countryCode) throws MalformedURLException, CityNotFoundException {
 		String address = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + countryCode + "&APPID=" + owApiKey;
 		URL url = new URL(address);
 		
@@ -56,8 +57,9 @@ public class API {
 	 * @param countryCode (ISO 3166)
 	 * @return LocationInformation
 	 * @throws MalformedURLException
+	 * @throws CityNotFoundException 
 	 */
-	public static LocationInformation getCurrentInformation(String city, String countryCode) throws MalformedURLException {
+	public static LocationInformation getCurrentInformation(String city, String countryCode) throws MalformedURLException, CityNotFoundException {
 		LocationInformation location = new LocationInformation(city, countryCode);
 		String address = "http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + countryCode + "&APPID=" + owApiKey;
 		URL url = new URL(address);
@@ -100,8 +102,9 @@ public class API {
 	 * @param countryCode (ISO 3166)
 	 * @return HourlyLocationInformation
 	 * @throws MalformedURLException
+	 * @throws CityNotFoundException 
 	 */
-	public static HourlyLocationInformation getFiveDayForecast(String city, String countryCode) throws MalformedURLException {
+	public static HourlyLocationInformation getFiveDayForecast(String city, String countryCode) throws MalformedURLException, CityNotFoundException {
 		HourlyLocationInformation hli = new HourlyLocationInformation(city, countryCode);
 		String address = "http://api.openweathermap.org/data/2.5/forecast?q=" + city + "," + countryCode + "&APPID=" + owApiKey;
 		URL url = new URL(address);
@@ -159,8 +162,9 @@ public class API {
 	 * @param locInfo - an already created LocationInformation object
 	 * @return LocationInformation
 	 * @throws MalformedURLException
+	 * @throws CityNotFoundException 
 	 */
-	private static LocationInformation getPollutionLevels(LocationInformation locInfo) throws MalformedURLException { 
+	private static LocationInformation getPollutionLevels(LocationInformation locInfo) throws MalformedURLException, CityNotFoundException { 
 		updateLongitudeAndLatitude(locInfo.getCityName(), locInfo.getCountryCode());
 		
 		//CARBON MONOXIDE DATA GATHERING
