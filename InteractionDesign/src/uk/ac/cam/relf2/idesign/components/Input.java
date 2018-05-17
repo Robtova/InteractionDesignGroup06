@@ -1,5 +1,7 @@
 package uk.ac.cam.relf2.idesign.components;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -8,7 +10,7 @@ import java.awt.event.MouseWheelListener;
 
 import javax.swing.JPanel;
 
-public class Input implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class Input implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 	
 	private int mMouseX, mMouseY;
 	private boolean mPressed, mPressedShow;
@@ -16,8 +18,10 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 	
 	private boolean mClicked, mClickedShow;
 	
+	private int mKeyCode = -1, mKeyCodeShow = -1;
+	
 	/**
-	 * Monitors the mouse inputs of a JPanel.
+	 * Monitors the mouse and keyboard inputs of a JPanel.
 	 * 
 	 * @param panel - the JPanel to monitor
 	 */
@@ -25,6 +29,9 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 		panel.addMouseListener(this);
 		panel.addMouseMotionListener(this);
 		panel.addMouseWheelListener(this);
+		
+		panel.setFocusable(true);
+		panel.addKeyListener(this);
 	}
 	
 	/**
@@ -78,6 +85,18 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 		mClicked = false;
 		
 		mPressedShow = mPressed;
+		
+		mKeyCodeShow = mKeyCode;
+		mKeyCode = -1;
+	}
+	
+	public int getTypedKeyCode() {
+		return mKeyCodeShow;
+	}
+	
+	@Override
+	public void keyTyped(KeyEvent e) {
+		mKeyCode = e.getKeyChar();
 	}
 
 	@Override
@@ -121,5 +140,13 @@ public class Input implements MouseListener, MouseMotionListener, MouseWheelList
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		mScroll = e.getWheelRotation();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 }
