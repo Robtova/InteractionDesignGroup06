@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import uk.ac.cam.group06.api.API;
+import uk.ac.cam.group06.api.CityNotFoundException;
 import uk.ac.cam.group06.api.HourlyLocationInformation;
 import uk.ac.cam.group06.api.LocationInformation;
 
@@ -32,6 +33,8 @@ public class DataStore {
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return getCurrentInformation("cambridge", "uk");
+			} catch (CityNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 		return mCurrentInfo.get(city+countryCode);
@@ -52,6 +55,8 @@ public class DataStore {
 			} catch (MalformedURLException e) {
 				e.printStackTrace();
 				return getFiveDayForecast("cambridge", "uk");
+			} catch (CityNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 		return mHourlyInfo.get(city+countryCode);
