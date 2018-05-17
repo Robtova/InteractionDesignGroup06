@@ -1,10 +1,10 @@
 package uk.ac.cam.relf2.idesign.components;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import uk.ac.cam.group06.idesign.ApplicationFrame;
@@ -145,7 +145,7 @@ public class DropDownComponent<T> extends GraphicComponent {
 	 * 
 	 * @param index - index of item in list
 	 */
-	public void setChosenItem(String item) {
+	public void setChosenItem(T item) {
 		int index = mItems.indexOf(item);
 		if(index < 0) return;
 		
@@ -154,7 +154,7 @@ public class DropDownComponent<T> extends GraphicComponent {
 	}
 	
 	/**
-	 * Returns the item chsoen from the drop down list.
+	 * Returns the item chosen from the drop down list.
 	 * 
 	 * @return the item chosen
 	 */
@@ -184,6 +184,15 @@ public class DropDownComponent<T> extends GraphicComponent {
 	 */
 	public void setMaxHeight(int maxHeight) {
 		mMaxHeight = maxHeight;
+	}
+	
+	public void setFont(Font font) {
+		for(int i = 0; i < mStack.mComponents.size(); i++) {
+			if(!(mStack.mComponents.get(i).mComponents.get(0) instanceof TextComponent)) continue;
+			TextComponent text = (TextComponent) mStack.mComponents.get(i).mComponents.get(0);
+			text.setFont(font);
+		}
+		mCurrent.setFont(font);
 	}
 	
 	@Override
