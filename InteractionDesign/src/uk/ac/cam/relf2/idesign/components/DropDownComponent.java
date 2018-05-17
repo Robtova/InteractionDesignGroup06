@@ -14,6 +14,8 @@ public class DropDownComponent<T> extends GraphicComponent {
 	private StackComponent mStack;
 	private TextComponent mCurrent;
 	private ImageComponent mArrow;
+	private GraphicComponent mScrollBar;
+	private GraphicComponent mScrollPane;
 	
 	private final List<T> mItems = new ArrayList<T>();
 	private int mChosen = 0;
@@ -26,13 +28,21 @@ public class DropDownComponent<T> extends GraphicComponent {
 	
 	private boolean mOpen = false;
 	
+	private int mMaxHeight = 195;
+	
+	private int mScroll = 0;
+	
 	public DropDownComponent(List<T> items) {
 		this.mItems.addAll(items);
 		
 		this.setBackgroundColor(TEXT);
 		
+		mScrollPane = new GraphicComponent();
+		mScrollPane.setPosition(0, 100, false);
+		mScrollPane.setSize(100, 100, false);
+		this.addComponent(mScrollPane);
+		
 		mStack = new StackComponent();
-		mStack.setPosition(0, 100, false);
 		mStack.setWidth(100, false);
 		
 		for(int i = 0; i < mItems.size(); i++) {
@@ -49,7 +59,46 @@ public class DropDownComponent<T> extends GraphicComponent {
 			text.setBackgroundColor(TEXT);
 			comp.addComponent(text);
 		}
-		this.addComponent(mStack);
+		mScrollPane.addComponent(mStack);
+		
+		mScrollBar = new CircleComponent() {
+			private boolean mPressed = false;
+			private int mouseY = 0;
+			@Override
+			public void update() {
+				Input input = ApplicationFrame.getInput();
+				if(input.getMousePressed()) {
+					int mx = input.getMouseX();
+					int x = getAbsoluteX();
+					int my = input.getMouseY();
+					int y = getAbsoluteY();
+					
+					if(mPressed) {
+						int dy = my - mouseY;
+						mouseY = my;
+
+						mScroll += (int) (dy / (float) (mMaxHeight - 40) * (float) (mMaxHeight-(mStack.getHeight())));
+						mScroll = Math.max(mMaxHeight-(mStack.getHeight()), mScroll);
+						mScroll = Math.min(0, mScroll);
+					}
+					if(mx >= x && my >= y && mx < x + getWidth() && my < y + getHeight()) {
+						mouseY = my;
+						mPressed = true;
+					} 
+				} else {
+					mPressed = false;
+				}
+				
+				int scrollbar = (int) ((float) (mScroll) / (float) (mMaxHeight-(mStack.getHeight())) * (float) (mMaxHeight - 40));
+				setPosition(-3, false, 10 + scrollbar, true);
+			}
+		};
+		mScrollBar.setBackgroundColor(new Color(200, 200, 200, 180));
+		mScrollBar.setSize(20, 20);
+		mScrollBar.setPosition(-3, false, 10, true);
+		mScrollBar.setOrigin(TOP_RIGHT);
+		mScrollBar.setBorder(SCREEN_RIGHT, SCREEN_TOP);
+		mScrollPane.addComponent(mScrollBar);
 		
 		initialiseChosenComponent();
 	}
@@ -128,9 +177,25 @@ public class DropDownComponent<T> extends GraphicComponent {
 		}
 	}
 	
+	/**
+	 * Set the maximum height that the drop down box can be.
+	 * 
+	 * @param maxHeight - the maximum height
+	 */
+	public void setMaxHeight(int maxHeight) {
+		mMaxHeight = maxHeight;
+	}
+	
 	@Override
 	public void update() {
-		if(!mOpen) return;
+		mStack.setY(mScroll, true);
+
+		if(!mOpen) {
+			mScroll = 0;
+			mScrollPane.setVisible(false);
+			return;
+		}
+		mScrollPane.setVisible(true);
 		
 		int mx = ApplicationFrame.getInput().getMouseX();
 		int my = ApplicationFrame.getInput().getMouseY();
@@ -147,6 +212,24 @@ public class DropDownComponent<T> extends GraphicComponent {
 				comp.setBackgroundColor(BACKGROUND);
 			}
 		}
+		
+		if(ApplicationFrame.getInput().getClicked()) {
+			if(mx < this.getAbsoluteX() || my < this.getAbsoluteY() 
+					|| mx > this.getAbsoluteX() + getWidth() || my > this.getAbsoluteY() + getHeight()) {
+				this.setOpen(false);
+			}
+		}
+		
+		
+		if(mStack.getHeight() > mMaxHeight) {
+			mScroll -= ApplicationFrame.getInput().getScroll() * 40;
+			mScroll = Math.max(mMaxHeight-(mStack.getHeight()), mScroll);
+			mScroll = Math.min(0, mScroll);
+			mScrollBar.setVisible(true);
+		} else {
+			mScrollBar.setVisible(false);
+			mScroll = 0;
+		}
 	}
 	
 	@Override
@@ -156,7 +239,8 @@ public class DropDownComponent<T> extends GraphicComponent {
 			g.fillRect(-1, -1, getWidth() + 2, getHeight() + 2);
 			g.setClip(0, 0, getWidth(), getHeight());
 		} else {
-			g.fillRect(-1, -1, getWidth() + 2, getHeight() + mStack.getHeight() + 2);
+			g.fillRect(-1, -1, getWidth() + 2, getHeight() + mMaxHeight + 2);
+			g.setClip(0, 0, getWidth(), getHeight() + mMaxHeight);
 		}
 	}
 }
