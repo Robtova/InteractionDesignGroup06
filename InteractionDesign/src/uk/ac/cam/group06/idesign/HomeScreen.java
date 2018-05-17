@@ -13,6 +13,7 @@ import uk.ac.cam.relf2.idesign.components.ImageComponent;
 public class HomeScreen extends GraphicComponent {
 
 	private WeatherIcon mIcon;
+	private int mLvl;
 	
 	public HomeScreen() {
 		initialiseHomeScreen();
@@ -23,6 +24,7 @@ public class HomeScreen extends GraphicComponent {
 		setSize(100, 100, false);
 		
 		WarningRing ring = new WarningRing();
+		ring.setWarningLevel(mLvl);
 		ring.setSize(60, 60, false);
 		ring.setPosition(50, 50, false);
 		ring.keepAspect(true);
@@ -46,5 +48,9 @@ public class HomeScreen extends GraphicComponent {
 	public void reloadData() {
 		LocationInformation li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
 		mIcon.setIcon(li.getIcon());
+		
+		PollutionLevel pi = new PollutionLevel(li);
+		mLvl = pi.getLevel();
+		
 	}
 }

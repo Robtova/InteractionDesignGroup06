@@ -26,9 +26,13 @@ public class PollutionLevel  {
 	private double sdHigh =  186.633e-6;
 
 	
-	public PollutionLevel(LocationInformation locRequested) throws MalformedURLException{
+	public PollutionLevel(LocationInformation locRequested){
 		// creates instance of PollutionLevel using information from location
-		locinfo = API.getCurrentInformation(locRequested.getCityName(), locRequested.getCountryCode());
+		try {
+			locinfo = API.getCurrentInformation(locRequested.getCityName(), locRequested.getCountryCode());
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 		
 		nitrogenDioxide = locinfo.getNitrogenDioxide();
 		carbonMonoxide = locinfo.getCarbonMonoxide();
