@@ -72,9 +72,10 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		this.setPosition(0, 0, true);
 		this.setSize(d.width, d.height, true);
 		resized = true;
+		
 		frame.pack();
 		frame.setSize(d);
-		
+		frame.setVisible(true);
 		run();
 	}
 	
@@ -131,7 +132,7 @@ public class GraphicPanel extends GraphicComponent implements ComponentListener 
 		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		
 		repaint(g);
-
+		
 		Graphics g2 = mPanel.getGraphics();
 		g2.drawImage(image, 0, 0, mPanel.getWidth(), mPanel.getHeight(), null);
 		g2.dispose();
