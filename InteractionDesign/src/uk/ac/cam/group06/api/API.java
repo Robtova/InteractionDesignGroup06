@@ -1,5 +1,6 @@
 package uk.ac.cam.group06.api;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 import javax.json.Json;
@@ -205,8 +207,35 @@ public class API {
 		return locInfo;
 	}
 	
+	public static HashMap<String, String> getCountrycodeMap(){
+		HashMap<String, String> countryCodes = new HashMap<String, String>();
+		Scanner scanner;
+		
+		try {
+			scanner = new Scanner(new File("ISO_Countrycodes.csv"));
+			scanner.useDelimiter(",");
+			scanner.nextLine();
+		    while(scanner.hasNextLine()){
+		    	String iso = scanner.next();
+		    	String country = scanner.next();
+		    	
+		    	countryCodes.put(iso, country);
+		    	scanner.nextLine();
+		    }
+		    scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return countryCodes;
+	}
+	
 	//PRIVATE METHODS
 	private static int kelvinToCelsius(float temp) {
 		return (int) (temp - 273.15);
+	}
+	
+	public static void main(String[] args) {
+		API.getCountrycodeMap();
 	}
 }

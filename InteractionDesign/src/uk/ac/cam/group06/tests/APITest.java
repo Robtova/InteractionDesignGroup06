@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -67,6 +68,13 @@ public class APITest {
 	@Test (expected = CityNotFoundException.class)
 	public void validCity_booleanCheck() throws IOException {
 		API.getCurrentInformation("cambrdge", "uk");
+	}
+	
+	@Test
+	public void checkCountryCodes_Uzbekistan() {
+		HashMap<String, String> countryCode = API.getCountrycodeMap();
+		
+		Assert.assertEquals(countryCode.get("UZ"), "Uzbekistan");
 	}
 
 }
