@@ -2,13 +2,21 @@ package uk.ac.cam.group06.tests;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import uk.ac.cam.group06.api.API;
+import uk.ac.cam.group06.api.CityNotFoundException;
 import uk.ac.cam.group06.api.HourlyLocationInformation;
 import uk.ac.cam.group06.api.LocationInformation;
 
@@ -54,6 +62,11 @@ public class APITest {
 		System.out.println(API.getCurrentInformation("cambridge", "uk").getCityName());
 		
 		Assert.assertNotEquals(null, API.getCurrentInformation("cambridge", "uk").getCityName());
+	}
+	
+	@Test (expected = CityNotFoundException.class)
+	public void validCity_booleanCheck() throws IOException {
+		API.getCurrentInformation("cambrdge", "uk");
 	}
 
 }

@@ -16,8 +16,10 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.JsonValue;
 
+import org.junit.Assert;
+
 public class API {
-	private static final String owApiKey = "6c5c12fe2311616982b42083d9c5a76e";
+	public static final String owApiKey = "6c5c12fe2311616982b42083d9c5a76e";
 	private static double longitude = 0.0d;
 	private static double latitude  = 0.0d;
 	
@@ -36,6 +38,8 @@ public class API {
 			JsonObject coordObj = obj.getJsonObject("coord");
 			longitude = coordObj.getJsonNumber("lon").doubleValue();
 			latitude = coordObj.getJsonNumber("lat").doubleValue();
+		} catch (FileNotFoundException f){
+			throw new CityNotFoundException(city);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +77,8 @@ public class API {
 			
 			JsonObject cloudData = obj.getJsonObject("clouds");
 			location.setCloudCover(String.valueOf(cloudData.getJsonNumber("all").intValue()));
+		} catch (FileNotFoundException f){
+			throw new CityNotFoundException(city);
 		} catch (IOException e) {
 			System.out.println("Input stream failed");
 			e.printStackTrace();
@@ -125,6 +131,8 @@ public class API {
 				
 				hli.addData(hd);
 			});
+		} catch (FileNotFoundException f){
+			throw new CityNotFoundException(city);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -138,11 +146,6 @@ public class API {
 
 	public static double getLatitude() {
 		return latitude;
-	}
-
-	//PRIVATE METHODS
-	private static int kelvinToCelsius(float temp) {
-		return (int) (temp - 273.15);
 	}
 	
 	private static LocationInformation getPollutionLevels(LocationInformation locInfo) throws MalformedURLException { 
@@ -195,20 +198,15 @@ public class API {
 			}
 		} catch (FileNotFoundException f) {
 			locInfo.setNitrogenDioxide(Double.NaN);
-			System.out.println("Warning no Nitrogen Dioxide Data for" + locInfo.getCityName());
+			System.out.println("Warning no Nitrogen Dioxide Data for " + locInfo.getCityName());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return locInfo;
 	}
 	
-	public static void main(String[] args) {
-		try {
-			System.out.println(API.getFiveDayForecast("cambridge", "uk").getForecast().get(0).getHumidity());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	//PRIVATE METHODS
+	private static int kelvinToCelsius(float temp) {
+		return (int) (temp - 273.15);
 	}
 }
