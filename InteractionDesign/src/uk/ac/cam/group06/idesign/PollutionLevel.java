@@ -34,10 +34,10 @@ public class PollutionLevel  {
 			e.printStackTrace();
 		}
 		
-		nitrogenDioxide = locinfo.getNitrogenDioxide();
-		carbonMonoxide = locinfo.getCarbonMonoxide();
-		sulphurDioxide = locinfo.getSulphurDioxide();
-		
+		nitrogenDioxide = Double.isNaN(locinfo.getNitrogenDioxide()) ? 0.0 : locinfo.getNitrogenDioxide();
+		carbonMonoxide = Double.isNaN(locinfo.getCarbonMonoxide()) ? 0.0 : locinfo.getCarbonMonoxide();
+		sulphurDioxide = Double.isNaN(locinfo.getSulphurDioxide()) ? 0.0 : locinfo.getSulphurDioxide();
+				
 		mLevel = calculateLevel();
 	}
 	
@@ -50,7 +50,7 @@ public class PollutionLevel  {
 		if(nitrogenDioxide > ndMed) {ndScore = (nitrogenDioxide > ndHigh) ? 2 : 1;}
 		if(carbonMonoxide > cmMed) {cmScore = (carbonMonoxide > cmHigh) ? 2 : 1;}
 		if(sulphurDioxide > sdMed) {sdScore = (sulphurDioxide > sdHigh) ? 2 : 1;}
-
+		
 		// combine the overall points for overall score, ranging from 0 to 6
 		overallScore = ndScore + cmScore + sdScore;
 		
