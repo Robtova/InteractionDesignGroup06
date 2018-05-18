@@ -1,11 +1,9 @@
 package uk.ac.cam.group06.api;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -74,7 +72,10 @@ public class API {
 			
 			JsonObject windData = obj.getJsonObject("wind");
 			location.setWindSpeed(String.valueOf(windData.getJsonNumber("speed").intValue()));
-			location.setWindDirection(String.valueOf(windData.getJsonNumber("deg").intValue()));
+			
+//			This line always throws a null pointer exception.
+			JsonNumber windDirection = windData.getJsonNumber("deg");
+			if(windDirection != null) location.setWindDirection(String.valueOf(windDirection.intValue()));
 			
 			JsonObject cloudData = obj.getJsonObject("clouds");
 			location.setCloudCover(String.valueOf(cloudData.getJsonNumber("all").intValue()));

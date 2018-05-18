@@ -29,8 +29,7 @@ public class DataStore {
 			try {
 				mCurrentInfo.put(city+countryCode, API.getCurrentInformation(city, countryCode));
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return getCurrentInformation("cambridge", "uk");
+				throw new RuntimeException(e);
 			}
 		}
 		return mCurrentInfo.get(city+countryCode);
@@ -50,8 +49,7 @@ public class DataStore {
 			try {
 				mHourlyInfo.put(city+countryCode, API.getFiveDayForecast(city, countryCode));
 			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				return getFiveDayForecast("cambridge", "uk");
+				throw new RuntimeException(e);
 			}
 		}
 		return mHourlyInfo.get(city+countryCode);
