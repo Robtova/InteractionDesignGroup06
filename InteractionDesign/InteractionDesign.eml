@@ -9,4 +9,7 @@
 	<lib name="junit-4.11.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/InteractionDesign/junit-4.11.jar!/"/>
 	</lib>
+	<lib name="javax.json-1.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/InteractionDesign/javax.json-1.1.jar!/"/>
+	</lib>
 </component>

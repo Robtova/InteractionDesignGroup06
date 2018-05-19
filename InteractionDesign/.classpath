@@ -3,7 +3,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="res"/>
-	<classpathentry exported="true" kind="lib" path="javax.json-api-1.0.jar"/>
+	<classpathentry kind="lib" path="javax.json-api-1.0.jar"/>
 	<classpathentry exported="true" kind="lib" path="junit-4.11.jar"/>
+	<classpathentry exported="true" kind="lib" path="javax.json-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
