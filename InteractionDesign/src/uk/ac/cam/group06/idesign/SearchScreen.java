@@ -133,9 +133,9 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				//try {
+				try {
 					DataStore.getCurrentInformation(mTextField.getText(), mCountry.getChosenItem().getISOCode());
-					DataStore.getFiveDayForecast(mTextField.getText(), mCountry.getChosenItem().getISOCode());/*
+					DataStore.getFiveDayForecast(mTextField.getText(), mCountry.getChosenItem().getISOCode());
 				} catch (CityNotFoundException e) {
 					String city = mTextField.getText();
 					String country = mCountry.getChosenItem().toString();
@@ -144,7 +144,7 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 					mError.setText("Sorry " + city + " does not exist in " + country + ".");
 					mError.setVisible(true);
 					return;
-				}*/
+				}
 				ApplicationFrame.removeComponent(screen);
 				ApplicationFrame.setCityAndCountry(mTextField.getText(), mCountry.getChosenItem());
 			}
