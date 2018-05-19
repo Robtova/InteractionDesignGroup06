@@ -27,7 +27,7 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 	private static Image X_IMAGE = Utils.loadImage("/x.png");
 	
 	private static final Image LOADING = Utils.loadImage("/loading.png");
-	private static final Image SEARCH_SYMBOL = Utils.loadImage("/search_symbol.png");
+	private static final Image SEARCH_SYMBOL = Utils.loadImage("/search_button.png");
 
 	public SearchScreen() {
 		setBackgroundColor(new Color(220, 220, 220, 180));
@@ -133,9 +133,9 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
+				//try {
 					DataStore.getCurrentInformation(mTextField.getText(), mCountry.getChosenItem().getISOCode());
-					DataStore.getFiveDayForecast(mTextField.getText(), mCountry.getChosenItem().getISOCode());
+					DataStore.getFiveDayForecast(mTextField.getText(), mCountry.getChosenItem().getISOCode());/*
 				} catch (CityNotFoundException e) {
 					String city = mTextField.getText();
 					String country = mCountry.getChosenItem().toString();
@@ -144,7 +144,7 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 					mError.setText("Sorry " + city + " does not exist in " + country + ".");
 					mError.setVisible(true);
 					return;
-				}
+				}*/
 				ApplicationFrame.removeComponent(screen);
 				ApplicationFrame.setCityAndCountry(mTextField.getText(), mCountry.getChosenItem());
 			}
