@@ -27,7 +27,7 @@ public class SearchScreen extends GraphicComponent implements ComponentListener 
 	private static Image X_IMAGE = Utils.loadImage("/x.png");
 	
 	private static final Image LOADING = Utils.loadImage("/loading.png");
-	private static final Image SEARCH_SYMBOL = Utils.loadImage("/search_button.png");
+	private static final Image SEARCH_SYMBOL = Utils.loadImage("/search_symbol.png");
 
 	public SearchScreen() {
 		setBackgroundColor(new Color(220, 220, 220, 180));
