@@ -53,4 +53,9 @@ public class HomeScreen extends GraphicComponent {
 		
 		mRing.setWarningLevel(mLvl);
 	}
+	
+	public WeatherIcon getWeatherIcon() {
+		return mIcon; 
+	}
+	
 }
