@@ -1,5 +1,6 @@
 package uk.ac.cam.group06.idesign;
 
+import sun.security.util.Debug;
 import uk.ac.cam.group06.api.LocationInformation;
 
 public class PollutionLevel  {
@@ -36,7 +37,11 @@ public class PollutionLevel  {
 		// calculates simplified pollution ranking
 		int ndScore = 0, cmScore = 0, sdScore = 0, warningNumber = 0;
 		int overallScore;
-		
+
+		Debug.println("NO2", Double.toString(nitrogenDioxide));
+		Debug.println("CO", Double.toString(carbonMonoxide));
+		Debug.println("SO2", Double.toString(sulphurDioxide));
+
 		// if the pollutant is in the medium band, 1 point, if it's high, 2 points
 		if(nitrogenDioxide > ndMed) {ndScore = (nitrogenDioxide > ndHigh) ? 2 : 1;}
 		if(carbonMonoxide > cmMed) {cmScore = (carbonMonoxide > cmHigh) ? 2 : 1;}
@@ -44,7 +49,10 @@ public class PollutionLevel  {
 		
 		// combine the overall points for overall score, ranging from 0 to 6
 		overallScore = ndScore + cmScore + sdScore;
-		
+
+		// change depending on if user is an asthma sufferer (don't have pollen data so just pretend)
+		if(SettingsScreen.getForAsthmatics()) overallScore += 3;
+
 		// puts the overall score into bands: [0-2], [3-4], [5-6]
 		if(overallScore > 2) {warningNumber = (overallScore > 4) ? 2 : 1;}
 		return warningNumber;

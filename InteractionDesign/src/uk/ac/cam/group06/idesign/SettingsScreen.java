@@ -48,6 +48,7 @@ public class SettingsScreen extends GraphicComponent {
             @Override
             public void onClicked(int x, int y) {
                 asthmatic.toggleGraphic();
+                forAsthmatics = !forAsthmatics;
             }
         });
         settingsList.addComponent(asthmatic);
@@ -57,6 +58,7 @@ public class SettingsScreen extends GraphicComponent {
             @Override
             public void onClicked(int x, int y) {
                 units.toggleGraphic();
+                useMetric = !useMetric;
             }
         });
         settingsList.addComponent(units);
@@ -69,6 +71,16 @@ public class SettingsScreen extends GraphicComponent {
             }
         });
         settingsList.addComponent(notifications);
+    }
+
+    private static boolean forAsthmatics = true;
+    public static boolean getForAsthmatics() {
+        return forAsthmatics;
+    }
+
+    private static boolean useMetric = true;
+    public static boolean getUseMetric() {
+        return useMetric;
     }
 
     @Override
