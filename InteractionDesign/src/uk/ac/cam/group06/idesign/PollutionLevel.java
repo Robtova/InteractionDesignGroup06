@@ -1,6 +1,5 @@
 package uk.ac.cam.group06.idesign;
 
-import sun.security.util.Debug;
 import uk.ac.cam.group06.api.LocationInformation;
 
 public class PollutionLevel  {
@@ -37,10 +36,6 @@ public class PollutionLevel  {
 		// calculates simplified pollution ranking
 		int ndScore = 0, cmScore = 0, sdScore = 0, warningNumber = 0;
 		int overallScore;
-
-		Debug.println("NO2", Double.toString(nitrogenDioxide));
-		Debug.println("CO", Double.toString(carbonMonoxide));
-		Debug.println("SO2", Double.toString(sulphurDioxide));
 
 		// if the pollutant is in the medium band, 1 point, if it's high, 2 points
 		if(nitrogenDioxide > ndMed) {ndScore = (nitrogenDioxide > ndHigh) ? 2 : 1;}

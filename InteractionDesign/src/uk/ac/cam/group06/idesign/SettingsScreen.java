@@ -12,6 +12,7 @@ public class SettingsScreen extends GraphicComponent {
         setBackgroundColor(new Color(250, 250, 250, 255));
         setSize(100, 100, false);
 
+        // Add the SETTINGS text on top
         TextComponent text = new TextComponent();
         text.setBackgroundColor(new Color(70, 70, 70));
         text.setFont(new Font("Ariel", Font.PLAIN, 36));
@@ -19,6 +20,7 @@ public class SettingsScreen extends GraphicComponent {
         text.setPosition(150, 55, true);
         addComponent(text);
 
+        // Add return arrow to get to main screen
         ImageComponent mArrow = new ImageComponent(UP_ARROW_IMAGE);
         mArrow.setSize(25, 25);
         mArrow.setPosition(15, 47,  true);
@@ -32,17 +34,20 @@ public class SettingsScreen extends GraphicComponent {
         });
         addComponent(mArrow);
 
+        // Add line
         GraphicComponent divide = new GraphicComponent();
         divide.setSize(100, false, 1, true);
         divide.setPosition(0, 111);
         divide.setBackgroundColor(new Color(180, 180, 180));
         addComponent(divide);
 
+        // Now add a list to hold and organise individual settings lines
         StackComponent settingsList = new StackComponent();
         settingsList.setSize(100, 86, false);
         settingsList.setPosition(0, 112);
         addComponent(settingsList);
 
+        // Add setting for user to specify whether they suffer from asthma
         SettingLine asthmatic = new SettingLine("Asthma sufferer", "Also use pollutants only hazardous to asthmatics");
         asthmatic.setComponentListener(new ComponentListener() {
             @Override
@@ -53,6 +58,7 @@ public class SettingsScreen extends GraphicComponent {
         });
         settingsList.addComponent(asthmatic);
 
+        // Setting to allow user to change units used in the app
         SettingLine units = new SettingLine("Use metric", "Select whether to use metric or imperial units");
         units.setComponentListener(new ComponentListener() {
             @Override
@@ -63,6 +69,7 @@ public class SettingsScreen extends GraphicComponent {
         });
         settingsList.addComponent(units);
 
+        // Setting to allow user to (theoretically) dis/enable phone alerts of bad conditions
         SettingLine notifications = new SettingLine("Display notifications", "If conditions are hazardous, display a notification?");
         notifications.setComponentListener(new ComponentListener() {
             @Override

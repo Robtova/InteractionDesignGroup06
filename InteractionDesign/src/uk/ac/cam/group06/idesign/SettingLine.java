@@ -18,12 +18,14 @@ public class SettingLine extends GraphicComponent implements ComponentListener{
         setSize(100, false, mHeight, true);
         setBackgroundColor(mBackgroundCol);
 
+        // Add line at bottom
         GraphicComponent divide = new GraphicComponent();
         divide.setSize(100, false, 1, true);
         divide.setPosition(0, mHeight-1);
         divide.setBackgroundColor(new Color(180, 180, 180));
         addComponent(divide);
 
+        // Add setting name text
         TextComponent mainSettingText = new TextComponent();
         mainSettingText.setAlign(TextComponent.RIGHT);
         mainSettingText.setBackgroundColor(mMainColor);
@@ -32,6 +34,7 @@ public class SettingLine extends GraphicComponent implements ComponentListener{
         mainSettingText.setPosition(20, 33, true);
         addComponent(mainSettingText);
 
+        // Add setting description text
         TextComponent descText = new TextComponent();
         descText.setAlign(TextComponent.RIGHT);
         descText.setBackgroundColor(mBabyColor);
@@ -40,6 +43,7 @@ public class SettingLine extends GraphicComponent implements ComponentListener{
         descText.setPosition(20, 65, true);
         addComponent(descText);
 
+        // Add toggle indicator icon
         toggle = new GraphicComponent();
         toggle.setBackgroundColor(mOn);
         toggle.setSize(20, 20, true);
