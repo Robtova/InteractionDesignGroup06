@@ -19,7 +19,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 	private static Input globalInput;
 	private static HomeScreen homeScreen;
 	private static BreakdownScreen breakdownScreen;
-//	private static DetailedBreakdownScreen detailedBreakdownScreen; 
+	private static DetailedBreakdownScreen detailedBreakdownScreen; 
 
 	private static GraphicPanel mPanel;
 	
@@ -88,8 +88,8 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		breakdownScreen = new BreakdownScreen();
 		mPanel.addComponent(breakdownScreen);
 
-//		detailedBreakdownScreen = new DetailedBreakdownScreen(); 
-//		mPanel.addComponent(detailedBreakdownScreen);
+		detailedBreakdownScreen = new DetailedBreakdownScreen(); 
+		mPanel.addComponent(detailedBreakdownScreen);
 		
 		setVisible(true);
 	}
