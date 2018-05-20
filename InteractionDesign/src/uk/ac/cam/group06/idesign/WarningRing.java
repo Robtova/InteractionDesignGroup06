@@ -26,7 +26,7 @@ public class WarningRing extends ImageComponent implements ComponentListener {
 
 	@Override
 	public void onClicked(int x, int y) {	
-//		setWarningLevel((mLevel+1) / 3.0f + 0.16f);
+		setWarningLevel((mLevel+1));
 	}
 
 	public void setWarningLevel(int lvl) {
