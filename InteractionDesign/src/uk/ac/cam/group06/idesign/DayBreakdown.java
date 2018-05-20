@@ -22,8 +22,9 @@ import uk.ac.cam.relf2.idesign.components.TextComponent;
 import uk.ac.cam.relf2.idesign.components.Utils;
 
 public class DayBreakdown extends StackComponent implements ComponentListener {
-	
+		
 	private boolean mOpen;
+	private boolean mDetail;
 
 	private ImageComponent mArrow;
 	private StackComponent mStack;
@@ -36,6 +37,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 
 	
 	private static Color mStandardBackground = new Color(249, 249, 249);
+	private static Color mDetailsBackground = new Color(230, 230, 230);
 	private static Color mDivide = new Color(0xCCCCCC);
 	
 	private TextComponent mDateText;
@@ -48,6 +50,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	private String mIcon = null;
 	
 	private static Font mFont = new Font("Ariel", Font.PLAIN, 25);
+	private static Font mDetailFont = new Font("Ariel", Font.PLAIN, 20);
 
 	private List<HourlyData> mTodaysData;
 	
@@ -146,8 +149,10 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 * @param temperature - temperature to be displayed
 	 * @param pollution - pollution level to be displayed
 	 * @param humidity - humidity to be displayed
+	 * @param windSpeed - windSpeed to calculate warning level
 	 */
-	public void addTimeEntry(String time, String icon, String temperature, String humidity) {
+	
+	public void addTimeEntry(String time, String icon, String temperature, String humidity, String windSpeed) {
 		GraphicComponent bar = new GraphicComponent();
 		bar.setSize(100, false, 72, true);
 		bar.setBackgroundColor(mStandardBackground);
@@ -159,7 +164,7 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		divide.setPosition(0, -1);
 		divide.setBorder(GraphicComponent.SCREEN_LEFT, GraphicComponent.SCREEN_BOTTOM);
 		bar.addComponent(divide);
-
+		
 		TextComponent text = new TextComponent();
 		text.setText(time + "   --   " + temperature + "*C");
 		text.setFont(mFont);
@@ -168,11 +173,14 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		text.setBackgroundColor(new Color(180, 180, 180));
 		bar.addComponent(text);
 		
-		float level = 0.3f;
+		// get weather warning level and the contributors to it
+		WeatherWarning ww = new WeatherWarning(temperature, humidity, windSpeed);
+		int level = ww.getLevel();		// 0: green, 1-2: yellow, 3: red
+		ArrayList<String> warningContributors = ww.getContributors();
 		
 		Image img = SMALL_RED_ICON;
-		if(level <= 0.667) img = SMALL_YELLOW_ICON;
-		if(level <= 0.33) img = SMALL_GREEN_ICON;
+		if(level < 3) img = SMALL_YELLOW_ICON;
+		if(level < 1) img = SMALL_GREEN_ICON;
 		
 		ImageComponent warning = new ImageComponent(img);
 		warning.setSize(40, 40);
@@ -188,13 +196,45 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		text2.setBackgroundColor(new Color(180, 180, 180));
 		bar.addComponent(text2);
 		
-		if(icon != null) {
-			WeatherIconSmall iconImg = new WeatherIconSmall();
-			iconImg.setSize(64, 64);
-			iconImg.setPosition(240, 4);
-			iconImg.setIcon(icon);
-			bar.addComponent(iconImg);
-		}
+		WeatherIconSmall iconImg = new WeatherIconSmall();
+		iconImg.setSize(64, 64);
+		iconImg.setPosition(240, 4);
+		if(icon != null) iconImg.setIcon(icon);
+		bar.addComponent(iconImg);
+		
+		// Place the warning level contributors into a text string to display
+		TextComponent warningBreakdown = new TextComponent();
+		warningBreakdown.setVisible(false);
+		String warningList = warningContributors.isEmpty() ? "none" : String.join(", ", warningContributors);
+		warningBreakdown.setText("Warning: " + warningList + ".");
+		warningBreakdown.setFont(mDetailFont);
+		warningBreakdown.setPosition(25, true, 50, false);
+		warningBreakdown.setAlign(TextComponent.RIGHT);
+		warningBreakdown.setBackgroundColor(new Color(130, 130, 130));
+		bar.addComponent(warningBreakdown);
+		
+		// Toggle details of the weather warning by clicking on the warning icon
+		warning.setComponentListener(new ComponentListener() {
+			@Override
+			public void onClicked(int x, int y) {
+				if(!warningBreakdown.isVisible()) { 	// display the details of the weather warning
+					warningBreakdown.setVisible(true);
+					bar.setBackgroundColor(mDetailsBackground);
+					bar.removeComponent(text);
+					bar.removeComponent(text2);
+					bar.removeComponent(iconImg);		
+				}else {									// display the main time entry
+					warningBreakdown.setVisible(false);
+					bar.setBackgroundColor(mStandardBackground);
+					bar.addComponent(text);
+					bar.addComponent(text2);
+					bar.addComponent(iconImg);
+				}
+			}
+		});
+		
+		
+		
 	}
 	
 	/**
@@ -297,7 +337,8 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 			Date date = hd.getDate();
 
 			String time = Utils.leftPad(date.getHours()+"", 2, "0") + ":" + Utils.leftPad(date.getMinutes()+"", 2, "0");
-			addTimeEntry(time, hd.getIcon(), hd.getTemperature(), hd.getHumidity());
+			addTimeEntry(time, hd.getIcon(), hd.getTemperature(), hd.getHumidity(), hd.getWindSpeed());
+			
 		}
 		
 		setAveragedData(this.mShowWeather, this.mShowTemperature);
