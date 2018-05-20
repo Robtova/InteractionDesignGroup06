@@ -24,11 +24,6 @@ public class WarningRing extends ImageComponent implements ComponentListener {
 		this.setComponentListener(this);
 	}
 
-	@Override
-	public void onClicked(int x, int y) {	
-		setWarningLevel((mLevel+1));
-	}
-
 	public void setWarningLevel(int lvl) {
 		mLevel = lvl;
 		if(mLevel == 0)
@@ -37,5 +32,11 @@ public class WarningRing extends ImageComponent implements ComponentListener {
 			setImage(yellow_ring);
 		else 
 			setImage(red_ring);
+	}
+
+	@Override
+	public void onClicked(int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 }
