@@ -54,6 +54,8 @@ public class SettingsScreen extends GraphicComponent {
             public void onClicked(int x, int y) {
                 asthmatic.toggleGraphic();
                 forAsthmatics = !forAsthmatics;
+                ((HomeScreen)ApplicationFrame.getHomeScreen()).reloadData();
+                ((BreakdownScreen)ApplicationFrame.getBreakdownScreen()).reloadData();
             }
         });
         settingsList.addComponent(asthmatic);

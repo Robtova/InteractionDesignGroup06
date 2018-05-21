@@ -1,5 +1,6 @@
 package uk.ac.cam.group06.idesign;
 
+import sun.security.ssl.Debug;
 import uk.ac.cam.group06.api.LocationInformation;
 
 public class PollutionLevel  {
@@ -46,7 +47,13 @@ public class PollutionLevel  {
 		overallScore = ndScore + cmScore + sdScore;
 
 		// change depending on if user is an asthma sufferer (don't have pollen data so just pretend)
-		if(SettingsScreen.getForAsthmatics()) overallScore += 3;
+		if(SettingsScreen.getForAsthmatics()) {
+			int temp = Integer.valueOf(locinfo.getTemperature());
+			overallScore += 2;
+			if(temp >= 24) overallScore++; // Add 1 point for > 24
+			if(temp <= 10) overallScore++; // Add 1 point for < 10
+			if(temp < 5) overallScore++; // Add 2 points for < 5
+		}
 
 		// puts the overall score into bands: [0-2], [3-4], [5-6]
 		if(overallScore > 2) {warningNumber = (overallScore > 4) ? 2 : 1;}
