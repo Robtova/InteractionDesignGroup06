@@ -39,7 +39,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 	private static Color mDivide = new Color(0xCCCCCC);
 	
 	private static Font mFont = new Font("Ariel", Font.PLAIN, 25);
-	private static Font mDetailFont = new Font("Ariel", Font.PLAIN, 20);
+	private static Font mDetailFont = new Font("Ariel", Font.PLAIN, 17);
 	/**/
 	
 	/*For top bar*/
@@ -114,9 +114,9 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		// This is the format we want, to be able to associate an entry with an information box: 
 		// addEntry("CO", mCO, COInfoEntry);
 		
-		addEntry("CO", mCO, "PPB");
-		addEntry("SO2", mSO2, "PPB");
-		addEntry("NO2", mNO2, "PPB");
+		addEntry("Carbon Monoxide", mCO, "PPB");
+		addEntry("Sulphur Dioxide", mSO2, "PPB");
+		addEntry("Nitrogen Dioxide", mNO2, "PPB");
 		addEntry("Humidity", mHumidity, "%");
 		if(SettingsScreen.getUseMetric())
 			addEntry("Temperature", mTemperature, "*C");
@@ -197,7 +197,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		
 		/*Framework to add value text - values converted to integers for better readability.*/
 		TextComponent text2 = new TextComponent();
-		if (type == "CO" || type == "NO2" || type == "SO2") {
+		if (type == "Carbon Monoxide" || type == "Sulphur Dioxide" || type == "Nitrogen Dioxide") {
 			if (Double.isNaN(value)) {
 				text2.setFont(mDetailFont);
 				text2.setText("Not available for " + ApplicationFrame.getCity() + " yet.");
@@ -221,11 +221,8 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
 
 		mCO = li.getCarbonMonoxide(); 
-		System.out.println(mCO);
 		mSO2 = li.getSulphurDioxide(); 
-		System.out.println(mSO2);
 		mNO2 =  li.getNitrogenDioxide(); 
-		System.out.println(mNO2);
 		mHumidity = Integer.parseInt(li.getHumidity()); 
 		mTemperature = Integer.parseInt(li.getTemperature());
 	}
@@ -234,9 +231,9 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		initialiseCurrentInfo();
 		mStack.clearComponents();
 		
-		addEntry("CO", mCO, "PPB");
-		addEntry("SO2", mSO2, "PPB");
-		addEntry("NO2", mNO2, "PPB");
+		addEntry("Carbon Monoxide", mCO, "PPB");
+		addEntry("Sulphur Dioxide", mSO2, "PPB");
+		addEntry("Nitrogen Dioxide", mNO2, "PPB");
 		addEntry("Humidity", mHumidity, "%");
 		if(SettingsScreen.getUseMetric())
 			addEntry("Temperature", mTemperature, "*C");
