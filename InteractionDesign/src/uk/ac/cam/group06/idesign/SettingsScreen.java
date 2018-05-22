@@ -7,6 +7,8 @@ import java.awt.*;
 
 public class SettingsScreen extends GraphicComponent {
     private static Image UP_ARROW_IMAGE = Utils.loadImage("/up_arrow.png");
+    
+    private static SettingLine units, asthmatic, notifications;
 
     public SettingsScreen() {
         setBackgroundColor(new Color(250, 250, 250, 255));
@@ -48,50 +50,24 @@ public class SettingsScreen extends GraphicComponent {
         addComponent(settingsList);
 
         // Add setting for user to specify whether they suffer from asthma
-        SettingLine asthmatic = new SettingLine("Asthma sufferer", "Also use pollutants only hazardous to asthmatics");
-        asthmatic.setComponentListener(new ComponentListener() {
-            @Override
-            public void onClicked(int x, int y) {
-                asthmatic.toggleGraphic();
-                forAsthmatics = !forAsthmatics;
-                ((HomeScreen)ApplicationFrame.getHomeScreen()).reloadData();
-                ((BreakdownScreen)ApplicationFrame.getBreakdownScreen()).reloadData();
-            }
-        });
+        asthmatic = new SettingLine("Asthma sufferer", "Also use pollutants only hazardous to asthmatics");
         settingsList.addComponent(asthmatic);
 
         // Setting to allow user to change units used in the app
-        SettingLine units = new SettingLine("Use metric", "Select whether to use metric or imperial units");
-        units.setComponentListener(new ComponentListener() {
-            @Override
-            public void onClicked(int x, int y) {
-                units.toggleGraphic();
-                useMetric = !useMetric;
-                ((HomeScreen)ApplicationFrame.getHomeScreen()).reloadData();
-                ((BreakdownScreen)ApplicationFrame.getBreakdownScreen()).reloadData();
-            }
-        });
+        units = new SettingLine("Use metric", "Select whether to use metric or imperial units");
         settingsList.addComponent(units);
 
         // Setting to allow user to (theoretically) dis/enable phone alerts of bad conditions
-        SettingLine notifications = new SettingLine("Display notifications", "If conditions are hazardous, display a notification?");
-        notifications.setComponentListener(new ComponentListener() {
-            @Override
-            public void onClicked(int x, int y) {
-                notifications.toggleGraphic();
-            }
-        });
+        notifications = new SettingLine("Display notifications", "If conditions are hazardous, display a notification?");
         settingsList.addComponent(notifications);
     }
 
-    private static boolean forAsthmatics = true;
     public static boolean getForAsthmatics() {
-        return forAsthmatics;
+        return asthmatic.getOn();
     }
 
-    private static boolean useMetric = true;
     public static boolean getUseMetric() {
-        return useMetric;
+        return units.getOn();
     }
 
     @Override

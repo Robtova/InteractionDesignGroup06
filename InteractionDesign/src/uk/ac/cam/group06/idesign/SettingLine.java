@@ -1,19 +1,24 @@
 package uk.ac.cam.group06.idesign;
 
+import java.awt.Color;
+import java.awt.Font;
+
+import uk.ac.cam.relf2.idesign.components.CircleComponent;
 import uk.ac.cam.relf2.idesign.components.ComponentListener;
 import uk.ac.cam.relf2.idesign.components.GraphicComponent;
 import uk.ac.cam.relf2.idesign.components.TextComponent;
+import uk.ac.cam.relf2.idesign.components.ToggleButton;
 
-import java.awt.*;
-
-public class SettingLine extends GraphicComponent implements ComponentListener{
+public class SettingLine extends GraphicComponent {
     private static final int mHeight = 100;
     private static final Font mMainFont = new Font("Ariel", Font.PLAIN, 36),
-                              mBabyFont = new Font("Ariel", Font.PLAIN, 16);
+                              mBabyFont = new Font("Ariel", Font.PLAIN, 18);
     private static final Color mBackgroundCol = new Color(250, 250, 250),
                                mMainColor = new Color(140, 140, 140),
                                mBabyColor = new Color(180, 180, 180);
 
+    private ToggleButton toggle;
+    
     public SettingLine(String settingText, String settingDescription){
         setSize(100, false, mHeight, true);
         setBackgroundColor(mBackgroundCol);
@@ -40,28 +45,18 @@ public class SettingLine extends GraphicComponent implements ComponentListener{
         descText.setBackgroundColor(mBabyColor);
         descText.setFont(mBabyFont);
         descText.setText(settingDescription);
-        descText.setPosition(20, 65, true);
+        descText.setPosition(20, 70, true);
         addComponent(descText);
 
         // Add toggle indicator icon
-        toggle = new GraphicComponent();
-        toggle.setBackgroundColor(mOn);
-        toggle.setSize(20, 20, true);
+        toggle = new ToggleButton();
+        toggle.setOrigin(MIDDLE_CENTRE);
+        toggle.setSize(80, 40, true);
         toggle.setPosition(85, 50, false);
         addComponent(toggle);
     }
-
-    private static Color mOn = new Color(70, 70, 70),
-                         mOff = new Color(180, 180, 180);
-    private GraphicComponent toggle;
-    public void toggleGraphic() {
-        if(toggle.getBackgroundColor() == mOn)
-            toggle.setBackgroundColor(mOff);
-        else
-            toggle.setBackgroundColor(mOn);
-    }
-
-    @Override
-    public void onClicked(int x, int y) {
+    
+    public boolean getOn() {
+    	return this.toggle.getOn();
     }
 }
