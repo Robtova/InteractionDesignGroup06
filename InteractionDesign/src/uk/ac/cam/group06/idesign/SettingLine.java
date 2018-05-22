@@ -53,6 +53,7 @@ public class SettingLine extends GraphicComponent {
         toggle.setOrigin(MIDDLE_CENTRE);
         toggle.setSize(80, 40, true);
         toggle.setPosition(85, 50, false);
+        toggle.setOn(true);
         addComponent(toggle);
     }
     
