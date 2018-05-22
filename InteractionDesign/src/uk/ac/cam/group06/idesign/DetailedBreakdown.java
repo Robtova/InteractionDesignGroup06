@@ -39,6 +39,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 	private static Color mDivide = new Color(0xCCCCCC);
 	
 	private static Font mFont = new Font("Ariel", Font.PLAIN, 25);
+	private static Font mDetailFont = new Font("Ariel", Font.PLAIN, 20);
 	/**/
 	
 	/*For top bar*/
@@ -125,7 +126,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 	 * 
 	 * @param type - type to be displayed
 	 * @param value - value of pollution type
-	 * @param measureType - eg. PPM, % or *C
+	 * @param measureType - eg. PPB, % or *C
 	 */
 	private void addEntry(String type, double value, String measureType) {
 		/*Creates the stack bar and draws dividing lines*/
@@ -192,11 +193,17 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		
 		/*Framework to add value text - values converted to integers for better readability.*/
 		TextComponent text2 = new TextComponent();
-		if (type == "CO" || type == "NO2" || type == "SO2")
-			text2.setText((int)(value*1000000000) + measureType);
-		else 
+		if (type == "CO" || type == "NO2" || type == "SO2") {
+			if (Double.isNaN(value)) {
+				text2.setFont(mDetailFont);
+				text2.setText("Not available for " + ApplicationFrame.getCity() + " yet.");
+			} else {
+				text2.setFont(mFont);
+				text2.setText((int)(value*1000000000.0) + measureType);
+			}
+		} else {
 			text2.setText((int)value + measureType);
-		text2.setFont(mFont);
+		}
 		text2.setPosition(85, 50, false);
 		text2.setAlign(TextComponent.LEFT);
 		text2.setBackgroundColor(new Color(180, 180, 180));
@@ -210,8 +217,11 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
 
 		mCO = li.getCarbonMonoxide(); 
-		mSO2 = li.getSulphurDioxide()*1000000000; 
-		mNO2 =  li.getNitrogenDioxide()*1000000000; 
+		System.out.println(mCO);
+		mSO2 = li.getSulphurDioxide(); 
+		System.out.println(mSO2);
+		mNO2 =  li.getNitrogenDioxide(); 
+		System.out.println(mNO2);
 		mHumidity = Integer.parseInt(li.getHumidity()); 
 		mTemperature = Integer.parseInt(li.getTemperature());
 	}
