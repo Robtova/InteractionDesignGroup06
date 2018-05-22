@@ -12,6 +12,14 @@ public class HourlyData {
 	private String windSpeed;
 	private String windDirection;
 	
+	/*
+	 * A Class that encompasses the idea of a locations information
+	 * but for breaking down into time intervals. Doesn't extend the LocationInformation
+	 * class because it represents a slightly different concept and also the 
+	 * data provided by OWM API is different for time intervals
+	 * 
+	 */
+	
 	public HourlyData(Date date){
 		this.date = date;
 	}
