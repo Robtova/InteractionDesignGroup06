@@ -118,7 +118,10 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		addEntry("SO2", mSO2, "PPB");
 		addEntry("NO2", mNO2, "PPB");
 		addEntry("Humidity", mHumidity, "%");
-		addEntry("Temperature", mTemperature, "*C");
+		if(SettingsScreen.getUseMetric())
+			addEntry("Temperature", mTemperature, "*C");
+		else
+			addEntry("Temperature", (mTemperature*9/5+32), "*F");
 	}
 
 	
@@ -235,7 +238,10 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		addEntry("SO2", mSO2, "PPB");
 		addEntry("NO2", mNO2, "PPB");
 		addEntry("Humidity", mHumidity, "%");
-		addEntry("Temperature", mTemperature, "*C");
+		if(SettingsScreen.getUseMetric())
+			addEntry("Temperature", mTemperature, "*C");
+		else
+			addEntry("Temperature", (mTemperature*9/5+32), "*F");
 	}
 	
 
