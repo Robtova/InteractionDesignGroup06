@@ -12,7 +12,8 @@ public class ISOCode {
 	/*
 	 * This method is used for getting the associated country name with the 
 	 * ISO 3166 Code. This way it can be easily used with the drop-down menu 
-	 * of the search functionality within the app.
+	 * of the search functionality within the app. In the future makes sure the 
+	 * ISO Code that OWM uses is consistent with the ISO_Countrocodes.csv file
 	 */
 	@Override
 	public String toString(){
