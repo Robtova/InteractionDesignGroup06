@@ -166,7 +166,10 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 		bar.addComponent(divide);
 		
 		TextComponent text = new TextComponent();
-		text.setText(time + "   --   " + temperature + "*C");
+		if(SettingsScreen.getUseMetric())
+			text.setText(time + "   --   " + temperature + "*C");
+		else
+			text.setText(time + "   --   " + (Integer.parseInt(temperature)*9/5+32) + "*F");
 		text.setFont(mFont);
 		text.setPosition(25, true, 50, false);
 		text.setAlign(TextComponent.RIGHT);
@@ -244,7 +247,10 @@ public class DayBreakdown extends StackComponent implements ComponentListener {
 	 */
 	public void setTemperature(int temp) {
 		mTemperature = temp;
-		mTempText.setText(mTemperature + "*C");
+		if(SettingsScreen.getUseMetric())
+			mTempText.setText(mTemperature + "*C");
+		else
+			mTempText.setText((mTemperature*9/5+32) + "*F");
 	}
 	
 	/**

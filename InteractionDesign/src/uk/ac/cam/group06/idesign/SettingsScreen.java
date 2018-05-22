@@ -67,6 +67,8 @@ public class SettingsScreen extends GraphicComponent {
             public void onClicked(int x, int y) {
                 units.toggleGraphic();
                 useMetric = !useMetric;
+                ((HomeScreen)ApplicationFrame.getHomeScreen()).reloadData();
+                ((BreakdownScreen)ApplicationFrame.getBreakdownScreen()).reloadData();
             }
         });
         settingsList.addComponent(units);
