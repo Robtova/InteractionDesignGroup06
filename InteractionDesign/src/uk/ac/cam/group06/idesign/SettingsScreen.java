@@ -82,5 +82,6 @@ public class SettingsScreen extends GraphicComponent {
         super.removedFromComponent(parent);
         ApplicationFrame.getHomeScreen().setClickable(true);
         ApplicationFrame.getBreakdownScreen().setClickable(true);
+        ApplicationFrame.reloadAll();
     }
 }
