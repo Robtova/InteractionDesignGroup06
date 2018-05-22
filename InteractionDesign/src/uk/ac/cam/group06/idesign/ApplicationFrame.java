@@ -78,6 +78,12 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		breakdownScreen.reloadData();
 		detailedBreakdownScreen.reloadData(); 
 	}
+
+	public static void reloadAll(){
+		homeScreen.reloadData();
+		breakdownScreen.reloadData();
+		detailedBreakdownScreen.reloadData();
+	}
 	
 	@Override
 	public void initialise(GraphicPanel panel) {
