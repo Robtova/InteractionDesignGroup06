@@ -53,6 +53,13 @@ public class DetailedBreakdownScreen extends StackComponent {
 			setPosition(0, mPercentageY, false);
 		}
 	}
+	
+	
+	public void reloadData() {
+		LocationInformation li = DataStore.getCurrentInformation(ApplicationFrame.getCity(), ApplicationFrame.getCountryCode());
+
+		mTopBar.reloadData();
+	}
 
 	/*Initialises the detailed breakdown screen with current information, 
 	 *location initially set to Cambridge, UK.*/
@@ -107,4 +114,6 @@ public class DetailedBreakdownScreen extends StackComponent {
 		addComponent(cover);
 		/**/
 	}
+	
+	
 }

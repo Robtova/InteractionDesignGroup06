@@ -76,6 +76,7 @@ public class ApplicationFrame extends JFrame implements PanelListener {
 		mCountryCode = country;
 		homeScreen.reloadData();
 		breakdownScreen.reloadData();
+		detailedBreakdownScreen.reloadData(); 
 	}
 	
 	@Override

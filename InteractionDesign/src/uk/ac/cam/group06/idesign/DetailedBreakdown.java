@@ -109,7 +109,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		mStack.setY(72, true);
 		mStack.setSize(100, false, 72, true);
 
-		// This is th eformat we want, to be able to associate an entry with an information box: 
+		// This is the format we want, to be able to associate an entry with an information box: 
 		// addEntry("CO", mCO, COInfoEntry);
 		
 		addEntry("CO", mCO, "PPB");
@@ -216,6 +216,17 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		mTemperature = Integer.parseInt(li.getTemperature());
 	}
 	
+	public void reloadData() {
+		initialiseCurrentInfo();
+		mStack.clearComponents();
+		
+		addEntry("CO", mCO, "PPB");
+		addEntry("SO2", mSO2, "PPB");
+		addEntry("NO2", mNO2, "PPB");
+		addEntry("Humidity", mHumidity, "%");
+		addEntry("Temperature", mTemperature, "*C");
+	}
+	
 
 	/**
 	 * The date to be displayed in the top bar.
@@ -240,6 +251,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 			removeComponent(mStack);
 		}
 	}
+	
 	
 	/**
 	 * Returns whether the time entry stack is showing.
