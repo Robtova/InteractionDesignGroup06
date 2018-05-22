@@ -46,6 +46,7 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 	private Date mDate;
 	private TextComponent mDateText;
 	private GraphicComponent mTopBar;
+	private int mLvl; 
 	/**/
 	
 	/*Stores the current local information*/
@@ -156,14 +157,14 @@ public class DetailedBreakdown extends StackComponent implements ComponentListen
 		
 		/*Decides which pollution icon to use*/
 		// Pollution bands
-		double ndMed = 97.435e-6;
-		double ndHigh = 194.870e-6;
+		double ndMed = 97.435e-9;
+		double ndHigh = 194.870e-9;
+
+		double cmMed = 100.000e-9;
+		double cmHigh = 150.000e-9;
 				
-		double cmMed = 10.000e-6;
-		double cmHigh = 35.000e-6;
-				
-		double sdMed = 93.492e-6; 
-		double sdHigh =  186.633e-6;
+		double sdMed = 93.492e-9; 
+		double sdHigh =  186.633e-9;
 				 
 		Image img = LOW_POLLUTION;
 		
